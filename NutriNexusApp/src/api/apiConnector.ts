@@ -24,6 +24,15 @@ const apiConnector = {
     }
   },
 
+  deleteRecipe: async (recipeId: number): Promise<void> => {
+    try {
+      await axios.delete<number>(`${API_BASE_URL}/meals/${recipeId}`);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
+
   // getGames: async (): Promise<GameDto[]> => {
   //   try {
   //     const response: AxiosResponse = await axios.get(`${API_BASE_URL}/games`);

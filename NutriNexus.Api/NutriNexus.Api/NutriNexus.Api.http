@@ -4,3 +4,4 @@ GET {{NutriNexus.Api_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+GET http://localhost:5125/meals/
