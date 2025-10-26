@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using NutriNexusAPI.Data;
 using NutriNexusAPI.DTO;
 using NutriNexusAPI.Entities;
-using NutriNexusAPI.Mapping; 
+using NutriNexusAPI.Mapping;
+using System.Reflection.Metadata.Ecma335;
 
 namespace NutriNexusAPI.Endpoints
 {
@@ -16,6 +17,13 @@ namespace NutriNexusAPI.Endpoints
         public static RouteGroupBuilder MapMealAppEndpoints(this WebApplication app)
         {
             var group = app.MapGroup("meals");
+            var hello = app.MapGroup("hello");
+
+            hello.MapGet("/", () =>
+            {
+                return "Hello, world!";
+            });
+
 
             group.MapGet("/", async (MealAppContext dbContext) =>
                 await dbContext.Recipes
