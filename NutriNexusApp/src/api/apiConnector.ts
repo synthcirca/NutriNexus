@@ -1,9 +1,5 @@
 import axios, { type AxiosResponse } from 'axios';
-import type { GetMoviesResponse } from '../models/getMoviesResponse';
-import type { MovieDto } from '../models/movieDto';
-import type { GetMoviesByIdResponse } from '../models/getMovieByIdResponse';
 import { API_BASE_URL } from '../router/routes';
-import type { GameDto } from '../models/gameDto';
 import type { RecipeDto } from '../models/recipeDto';
 //import type { GetGamesResponse } from "../models/getGamesResponse";
 

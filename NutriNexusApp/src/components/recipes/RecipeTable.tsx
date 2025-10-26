@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { type GameDto } from '../../models/gameDto';
 import apiConnector from '../../api/apiConnector';
 import RecipeTableItem from './RecipeTableItem';
 import type { RecipeDto } from '../../models/recipeDto';
