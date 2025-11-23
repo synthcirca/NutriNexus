@@ -5,8 +5,9 @@ import React from 'react';
 import apiConnector from './api/apiConnector';
 import type { RecipeDto } from './models/recipeDto';
 import RecipeTableItem from './components/recipes/RecipeTableItem';
-import RecipeForm from './components/recipes/RecipeForm';
+import RecipeModal from './components/recipes/RecipeModal';
 import type { Recipe } from './models/types';
+import RecipeForm from './components/recipes/RecipeForm';
 
 interface AppState {
   recipes: RecipeDto[];
@@ -47,16 +48,18 @@ function App() {
     //   ))} */}
     //   {isModalOpen && <RecipeForm />}
     // </div>
-    <div className="relative">
-      <button
-        className="bg-green-600 hover:bg-green-500 transition duration-150
-      text-white px-5 py-2 rounded-md absolute top-4 left-8 transform"
-        onClick={addNewRecipe}
-      >
-        Show Modal
-      </button>
-      {isModalOpen && <RecipeForm onClose={closeModal} />}
-    </div>
+    
+    // <div className="relative">
+    //   <button
+    //     className="bg-green-600 hover:bg-green-500 transition duration-150
+    //   text-white px-5 py-2 rounded-md absolute top-4 left-8 transform"
+    //     onClick={addNewRecipe}
+    //   >
+    //     Show Modal
+    //   </button>
+    //   {isModalOpen && <RecipeModal onClose={closeModal} />}
+    // </div>
+    <RecipeForm></RecipeForm>
   );
 }
 
