@@ -5,6 +5,8 @@ export class Recipe {
   imageUrl: string = '';
   timeEstimate: number | undefined;
   servingSize: number | undefined;
+  ingredients: string[] | undefined;
+  directions: string[] | undefined;
 
   constructor(init?: any) {
     if (!init) return;
@@ -14,5 +16,7 @@ export class Recipe {
     if (init.imageUrl) this.imageUrl = init.imageUrl;
     if (init.timeEstimate) this.timeEstimate = init.timeEstimate;
     if (init.servingSize) this.servingSize = init.servingSize;
+    if (init.ingredients) this.ingredients = init.ingredients;
+    if (init.directions) this.directions = init.directions;
   }
 }

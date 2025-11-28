@@ -9,6 +9,7 @@ export const MOCK_RECIPES = [
     imageUrl: '/delicious-pasta-dish.jpg',
     timeEstimate: '30min',
     servingSize: '4',
+    rating: 4.3,
   }),
   new Recipe({
     id: 2,
