@@ -7,6 +7,10 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "types": ["jest", "node", "@types/jest", "@testing-library/jest-dom"]
+    "types": ["jest", "node", "@types/jest", "@testing-library/jest-dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }

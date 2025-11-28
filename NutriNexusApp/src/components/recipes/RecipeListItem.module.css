@@ -1,0 +1,5 @@
+/* Ensure images inside the card are consistently cropped */
+.recipeCard img {
+  object-fit: cover;      /* Fill the container while preserving aspect ratio */
+  object-position: center;/* Center the image when cropped */
+}

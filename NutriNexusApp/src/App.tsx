@@ -4,10 +4,22 @@ import axios from 'axios';
 import React from 'react';
 import apiConnector from './api/apiConnector';
 import type { RecipeDto } from './models/recipeDto';
-import RecipeTableItem from './components/recipes/RecipeTableItem';
-import RecipeModal from './components/recipes/RecipeModal';
+//import RecipeTableItem from './components/recipes/RecipeTableItem';
+//import RecipeModal from './components/recipes/RecipeModal';
 import type { Recipe } from './models/types';
-import RecipeForm from './components/recipes/RecipeForm';
+//import RecipeForm from './components/recipes/RecipeForm';
+//import RecipeCard from './components/recipes/RecipeCard';
+import RecipesPage from './components/recipes/RecipesPage';
+//import RecipeList from './components/recipes/RecipeList';
+
+//import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+// import {
+//   Sidebar,
+//   SidebarContent,
+//   SidebarFooter,
+//   SidebarGroup,
+//   SidebarHeader,
+// } from '@/components/ui/sidebar';
 
 interface AppState {
   recipes: RecipeDto[];
@@ -48,7 +60,7 @@ function App() {
     //   ))} */}
     //   {isModalOpen && <RecipeForm />}
     // </div>
-    
+
     // <div className="relative">
     //   <button
     //     className="bg-green-600 hover:bg-green-500 transition duration-150
@@ -59,7 +71,34 @@ function App() {
     //   </button>
     //   {isModalOpen && <RecipeModal onClose={closeModal} />}
     // </div>
-    <RecipeForm></RecipeForm>
+
+    // <main className="min-h-screen bg-background p-6 md:p-12">
+    //   <div className="mx-auto max-w-3xl">
+    //     <h1 className="mb-8 text-balance text-3xl font-bold text-foreground md:text-4xl">
+    //       My Recipe Collection
+    //     </h1>
+    //     <RecipeCard />
+    //   </div>
+    // </main>
+
+    // <SidebarProvider>
+    //   <Sidebar>
+    //     <SidebarHeader />
+    //     <SidebarContent>
+    //       <SidebarGroup />
+    //       <SidebarGroup />
+    //     </SidebarContent>
+    //     <SidebarFooter />
+    //   </Sidebar>
+    //   <main>
+    //     <SidebarTrigger />
+
+    //   </main>
+    // </SidebarProvider>
+
+    <div>
+      <RecipesPage />
+    </div>
   );
 }
 
