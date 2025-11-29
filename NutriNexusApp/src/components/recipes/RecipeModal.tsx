@@ -12,7 +12,7 @@ interface RecipeType {
   description: string;
   imageUrl: string;
   timeEstimate: string | undefined;
-  rating: number | undefined; 
+  rating: number | undefined;
   servingSize: number | undefined;
   ingredients: string[] | undefined;
   directions: string[] | undefined;
@@ -175,6 +175,7 @@ export default function RecipeModal({
 
         {/* Content */}
         <div className="p-6">
+          {/* Quick Facts */}
           <div className="flex items-center gap-4 mb-6 pb-4 border-b-2 border-black">
             {editingField === 'timeEstimate' ? (
               <>
@@ -187,7 +188,6 @@ export default function RecipeModal({
                   className={`text-sm font-bold ${accentColors[accentColor]} px-3 py-2 border-2 border-black`}
                   autoFocus
                 />
-                <span className="text-lg font-bold">⭐ {rating}</span>
               </>
             ) : (
               <>
@@ -197,19 +197,66 @@ export default function RecipeModal({
                 >
                   {cookTime}
                 </span>
-                <span className="text-lg font-bold">⭐ {rating}</span>
+                <Pencil className="ml-2 inline-block h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
               </>
+            )}
+
+            {editingField === 'rating' ? (
+              <>
+                ⭐
+                <input
+                  type="text"
+                  value={tempValue}
+                  onChange={(e) => setTempValue(e.target.value)}
+                  onBlur={() => handleSave('rating')}
+                  onKeyDown={(e) => handleKeyDown(e, 'rating')}
+                  className={`text-lg font-bold`}
+                  autoFocus
+                />
+              </>
+            ) : (
+              <span
+                onClick={() => handleEdit('rating', rating.toString())}
+                className="text-lg font-bold"
+              >
+                ⭐ {rating}
+              </span>
             )}
           </div>
 
+          {/*Long Facts*/}
           <div className="space-y-4">
+            {/*Description*/}
             <div>
               <h3 className="text-xl font-bold mb-2 border-b-2 border-black pb-1">
                 Description
               </h3>
-              <p className="text-base">{description}</p>
+              {editingField === 'description' ? (
+                <>
+                  <input
+                    type="text"
+                    value={tempValue}
+                    onChange={(e) => setTempValue(e.target.value)}
+                    onBlur={() => handleSave('description')}
+                    onKeyDown={(e) => handleKeyDown(e, 'description')}
+                    className={` " border-black border-2 p-2.5 focus:outline-none focus:shadow-[2px_2px_0px_rgba(0,0,0,1)] focus:bg-[#FFA6F6] active:shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+     placeholder="you@example.com" text-sm font-bold ${accentColors[accentColor]} px-3 py-2 border-2 border-black`}
+                    autoFocus
+                  />
+                </>
+              ) : (
+                <>
+                  <p
+                    onClick={() => handleEdit('description', description)}
+                    className="text-base"
+                  >
+                    {description}
+                  </p>
+                </>
+              )}
             </div>
 
+            {/*Ingredients*/}
             <div>
               <h3 className="text-xl font-bold mb-2 border-b-2 border-black pb-1">
                 Ingredients
@@ -227,6 +274,7 @@ export default function RecipeModal({
               </ul>
             </div>
 
+            {/*Instructions*/}
             <div>
               <h3 className="text-xl font-bold mb-2 border-b-2 border-black pb-1">
                 Instructions
