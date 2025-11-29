@@ -5,7 +5,14 @@ namespace NutriNexusAPI.DTO;
 public record class RecipeSummaryDTO(
 	int Id,
 	string Name,
-	int TimeEstimate,
+	decimal Rating,
+	string ImageUrl,
+	int? PrepTime,
+	int? CookTime,
+	int? TotalTime,
 	int ServingSize,
-	List<RecipeStepDTO> Steps
-	); 
+	string Description,
+	ICollection<IngredientDTO> Ingredients
+	//ICollection<DirectionDTO> Directions; 
+	//List<RecipeStepDTO> Steps
+); 

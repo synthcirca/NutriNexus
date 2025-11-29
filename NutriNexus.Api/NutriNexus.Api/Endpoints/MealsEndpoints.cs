@@ -27,7 +27,7 @@ namespace NutriNexusAPI.Endpoints
 
             group.MapGet("/", async (MealAppContext dbContext) =>
                 await dbContext.Recipes
-                    .Include(recipe => recipe.RecipeSteps) //if we don't do this each Genre property will be null
+                    .Include(recipe => recipe.Ingredients) //if we don't do this each Genre property will be null
                     .Select(recipe => recipe.ToRecipeSummaryDTO())
                     .AsNoTracking() //improves performance by not tracking things in EF
                     .ToListAsync() //just calling this allows the runtime to await the task
@@ -35,28 +35,28 @@ namespace NutriNexusAPI.Endpoints
 
             
             ///////////////////////// GET /games/1
-            group.MapGet("/{id}", async (int id, MealAppContext dbContext) =>
-            {
-                Recipe? recipe = await dbContext.Recipes.FindAsync(id);
-                return recipe is null ? Results.NotFound() : Results.Ok(recipe.ToRecipeSummaryDTO());
-            }
-            )
-                .WithName(GetMealAppEndpointName);
+            // group.MapGet("/{id}", async (int id, MealAppContext dbContext) =>
+            // {
+            //     Recipe? recipe = await dbContext.Recipes.FindAsync(id);
+            //     return recipe is null ? Results.NotFound() : Results.Ok(recipe.ToRecipeSummaryDTO());
+            // }
+            // )
+            //     .WithName(GetMealAppEndpointName);
 
             /////////////////////// POST /games
-            group.MapPost("/", async (CreateRecipeDTO newRecipe, MealAppContext dbContext) =>
-            {
-                Recipe recipe = newRecipe.ToEntity();
-                //game.Genre = dbContext.Genres.Find(newRecipe.GenreId);
+            // group.MapPost("/", async (CreateRecipeDTO newRecipe, MealAppContext dbContext) =>
+            // {
+            //     Recipe recipe = newRecipe.ToEntity();
+            //     //game.Genre = dbContext.Genres.Find(newRecipe.GenreId);
 
-                dbContext.Recipes.Add(recipe);
-                await dbContext.SaveChangesAsync(); //translates changes into SQL statements 
+            //     dbContext.Recipes.Add(recipe);
+            //     await dbContext.SaveChangesAsync(); //translates changes into SQL statements 
 
-                return Results.CreatedAtRoute(
-                    GetMealAppEndpointName,
-                    new { id = recipe.Id },
-                    recipe.ToRecipeSummaryDTO());
-            }).WithParameterValidation();
+            //     return Results.CreatedAtRoute(
+            //         GetMealAppEndpointName,
+            //         new { id = recipe.Id },
+            //         recipe.ToRecipeSummaryDTO());
+            // }).WithParameterValidation();
 
             //////////////////////// PUT /games
             // group.MapPut("/{id}", async (int id, UpdateGameDTO updatedGame, GameStoreContext dbContext) =>

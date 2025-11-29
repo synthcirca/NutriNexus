@@ -16,17 +16,17 @@ namespace NutriNexusAPI.Mapping
         //     };
         // }
 
-        public static Recipe ToEntity(this CreateRecipeDTO recipe)
-		{
-            return new Recipe()
-            {
-                Name = recipe.Name,
-                RecipeSteps = recipe.Steps.Select(i => new RecipeStep
-				{
-					Description = i.Description
-				}).ToList()
-            };
-		}
+        // public static Recipe ToEntity(this CreateRecipeDTO recipe)
+		// {
+        //     return new Recipe()
+        //     {
+        //         Name = recipe.Name,
+        //         RecipeSteps = recipe.Steps.Select(i => new RecipeStep
+		// 		{
+		// 			Description = i.Description
+		// 		}).ToList()
+        //     };
+		// }
 
         // //want to create this with an ID because the user is trying to create a new game
         // public static Game ToEntity(this UpdateGameDTO game, int id)
@@ -49,13 +49,21 @@ namespace NutriNexusAPI.Mapping
             (
                 recipe.Id,
                 recipe.Name,
-                recipe.TimeEstimate,
+                recipe.Rating,
+                recipe.ImageUrl,
+                recipe.PrepTime,
+                recipe.CookTime,
+                recipe.TotalTime,
                 recipe.ServingSize,
-                recipe.RecipeSteps?.Select(i => new RecipeStepDTO
+                recipe.Description,
+                //recipe.Ingredients
+                recipe.Ingredients?.Select(i => new IngredientDTO
                 (
                     i.Id,
-                    i.Description
-                )).ToList() ?? new List<RecipeStepDTO>()
+                    i.Name,
+                    i.Calories,
+                    i.UnitId
+                )).ToList() ?? new List<IngredientDTO>()
             );
          
         }

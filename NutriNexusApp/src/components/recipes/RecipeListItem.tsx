@@ -53,6 +53,7 @@ export default function RecipeListItem(props: RecipeListItemProps) {
       </div>
 
       <RecipeModal
+	  	recipe=recipe
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={recipe.name}

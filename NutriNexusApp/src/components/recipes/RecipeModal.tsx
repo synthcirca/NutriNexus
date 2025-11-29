@@ -1,4 +1,5 @@
 import React, { useState, FormEvent } from 'react';
+
 //import { Recipe } from '../../models/types';
 import styles from './RecipeModal.module.css';
 import { RiCloseLine } from 'react-icons/ri';
@@ -21,6 +22,7 @@ interface RecipeType {
 }
 
 interface RecipeModalProps {
+  recipe: Recipe, 
   isOpen: boolean;
   onClose: () => void;
   title: string;
@@ -60,7 +62,7 @@ export default function RecipeModal({
   };
 
   const [editingField, setEditingField] = useState<string | null>(null);
-  const [recipe, setRecipe] = useState<RecipeType>({
+  const [recipe, setRecipe] = useState<Recipe>({
     id: -1,
     name: 'Classic Spaghetti Carbonara',
     description:
@@ -299,7 +301,7 @@ export default function RecipeModal({
               </ol>
             </div>
 
-            
+
           </div>
         </div>
       </div>

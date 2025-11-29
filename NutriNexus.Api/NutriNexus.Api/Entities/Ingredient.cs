@@ -2,9 +2,9 @@
 {
     public class Ingredient
     {
-        int Id { get; set; }
-        string Name { get; set; }
-        float Calories { get; set; }
-        Unit CaloriesUnit { get; set; }
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public float Calories { get; set; }
+        public int UnitId { get; set; }
     }
 }
