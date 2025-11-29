@@ -6,6 +6,8 @@ import { RiCloseLine } from 'react-icons/ri';
 import { Recipe } from '@/models/Recipe';
 import { Pencil } from 'lucide-react';
 
+import { IngredientList } from './IngredientList';
+
 interface RecipeType {
   id: number | undefined;
   name: string;
@@ -239,7 +241,7 @@ export default function RecipeModal({
                     onChange={(e) => setTempValue(e.target.value)}
                     onBlur={() => handleSave('description')}
                     onKeyDown={(e) => handleKeyDown(e, 'description')}
-                    className={` " border-black border-2 p-2.5 focus:outline-none focus:shadow-[2px_2px_0px_rgba(0,0,0,1)] focus:bg-[#FFA6F6] active:shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+                    className={` border-black border-2 p-2.5 focus:outline-none focus:shadow-[2px_2px_0px_rgba(0,0,0,1)] focus:bg-[#FFA6F6] active:shadow-[2px_2px_0px_rgba(0,0,0,1)]"
      placeholder="you@example.com" text-sm font-bold ${accentColors[accentColor]} px-3 py-2 border-2 border-black`}
                     autoFocus
                   />
@@ -257,7 +259,7 @@ export default function RecipeModal({
             </div>
 
             {/*Ingredients*/}
-            <div>
+            {/* <div>
               <h3 className="text-xl font-bold mb-2 border-b-2 border-black pb-1">
                 Ingredients
               </h3>
@@ -272,8 +274,10 @@ export default function RecipeModal({
                   <span className="mr-2 font-bold">•</span> Sample ingredient 3
                 </li>
               </ul>
+            </div> */}
+            <div >
+              <IngredientList initialIngredients={recipe.ingredients}/>
             </div>
-
             {/*Instructions*/}
             <div>
               <h3 className="text-xl font-bold mb-2 border-b-2 border-black pb-1">
@@ -294,6 +298,8 @@ export default function RecipeModal({
                 </li>
               </ol>
             </div>
+
+            
           </div>
         </div>
       </div>
