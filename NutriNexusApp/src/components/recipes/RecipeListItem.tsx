@@ -52,8 +52,7 @@ export default function RecipeListItem(props: RecipeListItemProps) {
         </div>
       </div>
 
-      <RecipeModal
-	  	recipe=recipe
+      {/* <RecipeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={recipe.name}
@@ -62,7 +61,7 @@ export default function RecipeListItem(props: RecipeListItemProps) {
         rating={4.8}
         imageUrl={recipe.imageUrl}
         accentColor="yellow"
-      />
+      /> */}
     </>
   );
 }
