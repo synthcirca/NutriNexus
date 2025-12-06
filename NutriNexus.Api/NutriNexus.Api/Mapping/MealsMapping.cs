@@ -62,10 +62,17 @@ namespace NutriNexusAPI.Mapping
                     i.Id,
                     i.Name,
                     i.Calories,
-                    i.UnitId
-                )).ToList() ?? new List<IngredientDTO>()
+                    i.UnitId,
+                    i.RecipeId
+                )).ToList() ?? new List<IngredientDTO>(),
+                recipe.Directions?.Select(i => new DirectionDTO
+                (
+                    i.Id,
+                    i.StepNumber,
+                    i.Description,
+                    i.RecipeId
+                )).ToList() ?? new List<DirectionDTO>()
             );
-         
         }
 
         // public static GameDetailsDTO ToGameDetailsDTO(this Game game)

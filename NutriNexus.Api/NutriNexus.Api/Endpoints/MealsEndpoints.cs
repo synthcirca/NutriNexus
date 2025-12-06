@@ -28,6 +28,7 @@ namespace NutriNexusAPI.Endpoints
             group.MapGet("/", async (MealAppContext dbContext) =>
                 await dbContext.Recipes
                     .Include(recipe => recipe.Ingredients) //if we don't do this each Genre property will be null
+                    .Include(recipe => recipe.Directions) 
                     .Select(recipe => recipe.ToRecipeSummaryDTO())
                     .AsNoTracking() //improves performance by not tracking things in EF
                     .ToListAsync() //just calling this allows the runtime to await the task

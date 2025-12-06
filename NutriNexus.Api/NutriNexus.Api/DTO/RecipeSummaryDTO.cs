@@ -12,7 +12,7 @@ public record class RecipeSummaryDTO(
 	int? TotalTime,
 	int ServingSize,
 	string Description,
-	ICollection<IngredientDTO> Ingredients
-	//ICollection<DirectionDTO> Directions; 
+	ICollection<IngredientDTO> Ingredients,
+	ICollection<DirectionDTO> Directions 
 	//List<RecipeStepDTO> Steps
 ); 

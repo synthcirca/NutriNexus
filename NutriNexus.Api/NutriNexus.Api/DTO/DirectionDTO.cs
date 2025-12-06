@@ -2,10 +2,9 @@ using NutriNexusAPI.Entities;
 
 namespace NutriNexusAPI.DTO;
 
-public record class IngredientDTO(
+public record class DirectionDTO(
 	int Id,
-	string Name,
-	float Calories,
-	int UnitId,
+	int StepNumber,
+	string Description,
 	int RecipeId
 ); 
