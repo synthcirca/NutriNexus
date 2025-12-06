@@ -1,9 +1,9 @@
 // __tests__/RecipeTable.test.tsx
-import React from 'react';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import RecipeTable from './RecipeTable';
-import apiConnector from '../../api/apiConnector';
-import type { RecipeDto } from '../../models/recipeDto';
+//import React from 'react';
+//import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+//import RecipeTable from './RecipeTable';
+//import apiConnector from '../../api/apiConnector';
+//import type { RecipeDto } from '../../models/recipeDto';
 
 // Mock the API module
 // jest.mock('../src/api/apiConnector', () => ({

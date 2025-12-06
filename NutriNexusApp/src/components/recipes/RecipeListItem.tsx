@@ -1,8 +1,8 @@
 import { Recipe } from '../../models/Recipe';
-import Image from '../../assets/delicious-pasta-dish.jpg';
-import CardStyles from './RecipeListItem.module.css';
-import RecipeModal from './RecipeModal';
-import { useState } from 'react';
+//import Image from '../../assets/delicious-pasta-dish.jpg';
+//import CardStyles from './RecipeListItem.module.css';
+//import RecipeModal from './RecipeModal';
+//import { useState } from 'react';
 
 function formatDescription(description: string): string {
   return description.substring(0, 80) + '...';
@@ -14,15 +14,15 @@ interface RecipeListItemProps {
 
 export default function RecipeListItem(props: RecipeListItemProps) {
   const { recipe } = props;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  //const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleClick = () => {
-    setIsModalOpen(true);
-  };
+  // const handleClick = () => {
+  //   setIsModalOpen(true);
+  // };
   return (
     <>
       <div
-        onClick={handleClick}
+        //onClick={handleClick}
         className="w-64 h-73 aspect-square bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer flex flex-col"
       >
         <div className="w-full h-40 border-b-4 border-black overflow-hidden bg-blue-200 flex-shrink-0">
