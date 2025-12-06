@@ -1,46 +1,60 @@
-import { Recipe } from '../models/Recipe';
+import type { Recipe } from '../models/Recipe';
 
-export const MOCK_RECIPES = [
-  new Recipe({
+export const MOCK_RECIPES: Recipe[] = [
+  {
     id: 1,
     name: 'Pasta Primavera',
     description:
       'really good pasta. amazing actually. the best I have ever had and that any one will ever have.',
     imageUrl: '/delicious-pasta-dish.jpg',
     timeEstimate: '30min',
-    servingSize: '4',
+    servingSize: 4,
     rating: 4.3,
-  }),
-  new Recipe({
+    ingredients: ['ingredient 1', 'ingredient 2', 'ingredient 3'],
+    directions: ['directions 1', 'directions 2', 'directions 3'],
+  },
+  {
     id: 2,
     name: 'Mac and Cheese',
     description: 'really good pasta',
     imageUrl: '/mac-and-cheese.jpg',
     timeEstimate: '30min',
-    servingSize: '4',
-  }),
-  new Recipe({
+    servingSize: 4,
+    rating: 4.3,
+    ingredients: ['ingredient 1', 'ingredient 2', 'ingredient 3'],
+    directions: ['directions 1', 'directions 2', 'directions 3'],
+  },
+  {
     id: 3,
     name: 'Cornish Hen',
     description: 'really good pasta',
     imageUrl: '/cornish-hen.jpg',
     timeEstimate: '30min',
-    servingSize: '4',
-  }),
-  new Recipe({
+    servingSize: 4,
+    rating: 4.3,
+    ingredients: ['ingredient 1', 'ingredient 2', 'ingredient 3'],
+    directions: ['directions 1', 'directions 2', 'directions 3'],
+  },
+  {
     id: 4,
     name: 'Soy Garlic Chicken',
     description: 'really good pasta',
     imageUrl: '/soy-garlic-chicken.jpg',
     timeEstimate: '30min',
-    servingSize: '4',
-  }),
-  new Recipe({
+    servingSize: 4,
+    rating: 4.3,
+    ingredients: ['ingredient 1', 'ingredient 2', 'ingredient 3'],
+    directions: ['directions 1', 'directions 2', 'directions 3'],
+  },
+  {
     id: 5,
     name: 'Blueberry Scones',
     description: 'really good pasta',
     imageUrl: '/blueberry-scones.jpg',
     timeEstimate: '30min',
-    servingSize: '4',
-  }),
+    servingSize: 4,
+    rating: 4.3,
+    ingredients: ['ingredient 1', 'ingredient 2', 'ingredient 3'],
+    directions: ['directions 1', 'directions 2', 'directions 3'],
+  },
 ];

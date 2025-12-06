@@ -1,4 +1,4 @@
-import { Recipe } from '../../models/Recipe';
+import type { Recipe } from '../../models/Recipe';
 //import Image from '../../assets/delicious-pasta-dish.jpg';
 //import CardStyles from './RecipeListItem.module.css';
 //import RecipeModal from './RecipeModal';

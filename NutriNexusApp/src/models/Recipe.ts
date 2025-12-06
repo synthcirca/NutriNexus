@@ -20,3 +20,15 @@
 //     if (init.directions) this.directions = init.directions;
 //   }
 // }
+
+export type Recipe = {
+  id: number | undefined;
+  name: string;
+  description: string;
+  imageUrl: string;
+  timeEstimate: string | undefined;
+  servingSize: number | undefined;
+  ingredients: string[] | undefined;
+  directions: string[] | undefined;
+  rating: number, 
+};

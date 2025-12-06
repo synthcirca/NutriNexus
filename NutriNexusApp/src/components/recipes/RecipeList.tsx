@@ -1,4 +1,5 @@
-import { Recipe } from '../../models/Recipe';
+//import Recipe from '../../models/Recipe';
+import type { Recipe } from '../../models/Recipe';
 import RecipeListItem from './RecipeListItem';
 
 interface RecipeListProps {

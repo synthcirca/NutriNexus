@@ -1,34 +1,32 @@
-import axios, { type AxiosResponse } from 'axios';
-import { API_BASE_URL } from '../router/routes';
-import type { RecipeDto } from '../models/recipeDto';
+//import axios, { type AxiosResponse } from 'axios';
+//import { API_BASE_URL } from '../router/routes';
+//import type { RecipeDto } from '../models/recipeDto';
 //import type { GetGamesResponse } from "../models/getGamesResponse";
 
 const apiConnector = {
-  getRecipes: async (): Promise<RecipeDto[]> => {
-    try {
-      const response: AxiosResponse = await axios.get(`${API_BASE_URL}/meals`);
-      console.log(response.data);
-      console.log(response.data.recipeDtos);
-      const recipe = response.data.map((recipe) => ({
-        ...recipe,
-      }));
-      console.log(recipe);
-      return recipe;
-    } catch (error) {
-      console.log('Error fetching recipes:', error);
-      throw error;
-    }
-  },
-
-  deleteRecipe: async (recipeId: number): Promise<void> => {
-    try {
-      await axios.delete<number>(`${API_BASE_URL}/meals/${recipeId}`);
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  },
-
+  // getRecipes: async (): Promise<RecipeDto[]> => {
+  //   try {
+  //     const response: AxiosResponse = await axios.get(`${API_BASE_URL}/meals`);
+  //     console.log(response.data);
+  //     console.log(response.data.recipeDtos);
+  //     const recipe = response.data.map((recipe) => ({
+  //       ...recipe,
+  //     }));
+  //     console.log(recipe);
+  //     return recipe;
+  //   } catch (error) {
+  //     console.log('Error fetching recipes:', error);
+  //     throw error;
+  //   }
+  // },
+  // deleteRecipe: async (recipeId: number): Promise<void> => {
+  //   try {
+  //     await axios.delete<number>(`${API_BASE_URL}/meals/${recipeId}`);
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw error;
+  //   }
+  // },
   // getGames: async (): Promise<GameDto[]> => {
   //   try {
   //     const response: AxiosResponse = await axios.get(`${API_BASE_URL}/games`);
@@ -44,7 +42,6 @@ const apiConnector = {
   //     throw error;
   //   }
   // },
-
   // getMovies: async (): Promise<MovieDto[]> => {
   //   try {
   //     const response: AxiosResponse<GetMoviesResponse> = await axios.get(
@@ -60,7 +57,6 @@ const apiConnector = {
   //     throw error;
   //   }
   // },
-
   // createMovie: async (movie: MovieDto): Promise<void> => {
   //   try {
   //     await axios.post<number>('${API_BASE_URL}/movies', movie);
@@ -69,7 +65,6 @@ const apiConnector = {
   //     throw error;
   //   }
   // },
-
   // editMovie: async (movie: MovieDto): Promise<void> => {
   //   try {
   //     await axios.put<number>('${API_BASE_URL}/movies', movie);
@@ -78,7 +73,6 @@ const apiConnector = {
   //     throw error;
   //   }
   // },
-
   // deleteMovie: async (movieId: number): Promise<void> => {
   //   try {
   //     await axios.delete<number>(`${API_BASE_URL}/movies/${movieId}`);
@@ -87,7 +81,6 @@ const apiConnector = {
   //     throw error;
   //   }
   // },
-
   // getMovieById: async (movieId: number): Promise<MovieDto | undefined> => {
   //   try {
   //     const response = await axios.get<GetMoviesByIdResponse>(

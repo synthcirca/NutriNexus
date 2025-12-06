@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, type KeyboardEvent } from 'react';
-import Checkbox from './ui/Checkbox'; 
+import Checkbox from './ui/Checkbox';
 
 interface Ingredient {
   id: string;
@@ -45,11 +45,11 @@ export function IngredientList({
 
   const handleInputChange = (id: string, value: string) => {
     setIngredients((prev) => {
-      const updated = prev.map((ing) =>
+      const updated = prev.map((ing: Ingredient) =>
         ing.id === id ? { ...ing, value } : ing
       );
 
-      const cleaned = updated.filter((ing, idx) => {
+      const cleaned = updated.filter((ing: Ingredient, idx: number) => {
         // Keep the ingredient being edited
         if (ing.id === id) return true;
         // Keep the last ingredient
@@ -59,7 +59,7 @@ export function IngredientList({
       });
 
       // If typing in the last input and it has content, add a new empty input
-      const lastIngredient = cleaned[cleaned.length - 1];
+      const lastIngredient: Ingredient = cleaned[cleaned.length - 1];
       if (lastIngredient.id === id && value.trim() !== '') {
         return [...cleaned, { id: `ingredient-${Date.now()}`, value: '' }];
       }
@@ -68,11 +68,7 @@ export function IngredientList({
     });
   };
 
-  const handleKeyDown = (
-    id: string,
-    index: number,
-    e: KeyboardEvent<HTMLInputElement>
-  ) => {
+  const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       // Add new ingredient below current one
@@ -119,7 +115,7 @@ export function IngredientList({
         {ingredients.map((ingredient, index) => (
           <div key={ingredient.id} className="flex items-center gap-1">
             <span className="text-sm font-bold text-muted-foreground select-none">
-              <Checkbox/>
+              <Checkbox />
             </span>
             <input
               ref={(el) => {
@@ -128,7 +124,7 @@ export function IngredientList({
               type="text"
               value={ingredient.value}
               onChange={(e) => handleInputChange(ingredient.id, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(ingredient.id, index, e)}
+              onKeyDown={(e) => handleKeyDown(index, e)}
               onBlur={() => handleBlur(ingredient.id, index)}
               placeholder={
                 index === 0 ? 'Click to add ingredient...' : 'Add another...'
