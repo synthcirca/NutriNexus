@@ -5,7 +5,7 @@ namespace NutriNexusAPI.Mapping
 {
     public static class MealsMapping
     {
-		// public static Game ToEntity(this CreateGameDTO game)
+        // public static Game ToEntity(this CreateGameDTO game)
         // {
         //     return new Game()
         //     {
@@ -16,17 +16,21 @@ namespace NutriNexusAPI.Mapping
         //     };
         // }
 
-        // public static Recipe ToEntity(this CreateRecipeDTO recipe)
-		// {
-        //     return new Recipe()
-        //     {
-        //         Name = recipe.Name,
-        //         RecipeSteps = recipe.Steps.Select(i => new RecipeStep
-		// 		{
-		// 			Description = i.Description
-		// 		}).ToList()
-        //     };
-		// }
+        //public static Recipe ToEntity(this CreateRecipeDTO newRecipe)
+        //{
+        //    return new Recipe()
+        //    {
+        //        Name = newRecipe.Name,
+        //        Rating = 0,
+        //        ImageUrl = newRecipe. "genericImg",
+
+
+        //        RecipeSteps = recipe.Steps.Select(i => new RecipeStep
+        //        {
+        //            Description = i.Description
+        //        }).ToList()
+        //    };
+        //}
 
         // //want to create this with an ID because the user is trying to create a new game
         // public static Game ToEntity(this UpdateGameDTO game, int id)
@@ -49,31 +53,45 @@ namespace NutriNexusAPI.Mapping
             (
                 recipe.Id,
                 recipe.Name,
-                recipe.Rating,
                 recipe.ImageUrl,
-                recipe.PrepTime,
-                recipe.CookTime,
-                recipe.TotalTime,
-                recipe.ServingSize,
                 recipe.Description,
-                //recipe.Ingredients
-                recipe.Ingredients?.Select(i => new IngredientDTO
-                (
-                    i.Id,
-                    i.Name,
-                    i.Calories,
-                    i.UnitId,
-                    i.RecipeId
-                )).ToList() ?? new List<IngredientDTO>(),
-                recipe.Directions?.Select(i => new DirectionDTO
-                (
-                    i.Id,
-                    i.StepNumber,
-                    i.Description,
-                    i.RecipeId
-                )).ToList() ?? new List<DirectionDTO>()
+                recipe.TotalTime,
+                recipe.Rating
             );
         }
+
+        //public static RecipeSummaryDTO ToRecipeSummaryDTO(this Recipe recipe)
+        //{
+
+        //    return new RecipeSummaryDTO
+        //    (
+        //        recipe.Id,
+        //        recipe.Name,
+        //        recipe.Rating,
+        //        recipe.ImageUrl,
+        //        recipe.PrepTime,
+        //        recipe.CookTime,
+        //        recipe.TotalTime,
+        //        recipe.ServingSize,
+        //        recipe.Description,
+        //        //recipe.Ingredients
+        //        recipe.Ingredients?.Select(i => new IngredientDTO
+        //        (
+        //            i.Id,
+        //            i.Name,
+        //            i.Calories,
+        //            i.UnitId,
+        //            i.RecipeId
+        //        )).ToList() ?? new List<IngredientDTO>(),
+        //        recipe.Directions?.Select(i => new DirectionDTO
+        //        (
+        //            i.Id,
+        //            i.StepNumber,
+        //            i.Description,
+        //            i.RecipeId
+        //        )).ToList() ?? new List<DirectionDTO>()
+        //    );
+        //}
 
         // public static GameDetailsDTO ToGameDetailsDTO(this Game game)
         // {
@@ -85,5 +103,5 @@ namespace NutriNexusAPI.Mapping
         //         game.ReleaseDate
         //     );
         // }
-	}
+    }
 }

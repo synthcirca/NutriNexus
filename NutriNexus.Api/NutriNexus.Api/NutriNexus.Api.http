@@ -5,3 +5,10 @@ Accept: application/json
 
 ###
 GET http://localhost:5125/meals/
+
+###
+GET http://0.0.0.0:8080/
+
+
+###
+GET http://0.0.0.0:8080/

@@ -1,6 +1,4 @@
-﻿using GameStore.API.Data;
-using GameStore.API.DTO;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NutriNexusAPI.Data;
 using NutriNexusAPI.DTO;
 using NutriNexusAPI.Entities;
@@ -27,14 +25,14 @@ namespace NutriNexusAPI.Endpoints
 
             group.MapGet("/", async (MealAppContext dbContext) =>
                 await dbContext.Recipes
-                    .Include(recipe => recipe.Ingredients) //if we don't do this each Genre property will be null
+                    .Include(recipe => recipe.Ingredients) //if we don't do this each 
                     .Include(recipe => recipe.Directions) 
                     .Select(recipe => recipe.ToRecipeSummaryDTO())
                     .AsNoTracking() //improves performance by not tracking things in EF
                     .ToListAsync() //just calling this allows the runtime to await the task
             );
 
-            
+
             ///////////////////////// GET /games/1
             // group.MapGet("/{id}", async (int id, MealAppContext dbContext) =>
             // {
@@ -45,19 +43,19 @@ namespace NutriNexusAPI.Endpoints
             //     .WithName(GetMealAppEndpointName);
 
             /////////////////////// POST /games
-            // group.MapPost("/", async (CreateRecipeDTO newRecipe, MealAppContext dbContext) =>
-            // {
-            //     Recipe recipe = newRecipe.ToEntity();
-            //     //game.Genre = dbContext.Genres.Find(newRecipe.GenreId);
+            //group.MapPost("/", async (CreateRecipeDTO newRecipe, MealAppContext dbContext) =>
+            //{
+            //    Recipe recipe = newRecipe.ToEntity();
+            //    //game.Genre = dbContext.Genres.Find(newRecipe.GenreId);
 
-            //     dbContext.Recipes.Add(recipe);
-            //     await dbContext.SaveChangesAsync(); //translates changes into SQL statements 
+            //    dbContext.Recipes.Add(recipe);
+            //    await dbContext.SaveChangesAsync(); //translates changes into SQL statements 
 
-            //     return Results.CreatedAtRoute(
-            //         GetMealAppEndpointName,
-            //         new { id = recipe.Id },
-            //         recipe.ToRecipeSummaryDTO());
-            // }).WithParameterValidation();
+            //    return Results.CreatedAtRoute(
+            //        GetMealAppEndpointName,
+            //        new { id = recipe.Id },
+            //        recipe.ToRecipeSummaryDTO());
+            //}).WithParameterValidation();
 
             //////////////////////// PUT /games
             // group.MapPut("/{id}", async (int id, UpdateGameDTO updatedGame, GameStoreContext dbContext) =>
@@ -88,7 +86,7 @@ namespace NutriNexusAPI.Endpoints
             //     return Results.NoContent();
             // }
             // );
-            
+
 
             return group;
         }

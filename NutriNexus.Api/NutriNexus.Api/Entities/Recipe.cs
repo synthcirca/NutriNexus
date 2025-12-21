@@ -1,23 +1,42 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using NutriNexus.Api.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace NutriNexusAPI.Entities
 {
     public class Recipe
     {
         public int Id { get; set; }
-        public string Name { get; set; } = null!; 
+
+        [Required]
+        [MaxLength(200)]
+        public string Name { get; set; } = null!;
+        [Required]
+        public required string ImageUrl { get; set; }
+        [Required]
+        public required string Description { get; set; }
         public decimal Rating { get; set; } = 0m;
-        public string? ImageUrl { get; set; }
-        public int? PrepTime { get; set; }
-        public int? CookTime { get; set; }
-        public int? TotalTime { get; set; }
+
+        //Quick Info
+        public int PrepTime { get; set; }
+        public int CookTime { get; set; }
+        public int TotalTime { get; set; }
         public int ServingSize { get; set; }
-        public string? Description { get; set; }
+
         public string? Course {get; set;}
         public string? Cuisine {get; set;}
-        public ICollection<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
-        public ICollection<Direction> Directions { get; set; } = new List<Direction>();
-        public ICollection<NutritionFact> NutritionFacts { get; set; } = new List<NutritionFact>();
+
+        //public ICollection<Equipment> Equipment { get; set; } = new List<Equipment>();
+        public ICollection<RecipeIngredient> Ingredients { get; set; } = new List<RecipeIngredient>();
+        public ICollection<string> Directions { get; set; } = new List<string>();
+        
+        //Nutrition Information
+        public int Calories { get; set; } = 0;
+        public int Carbs { get; set; } = 0;
+        public int Protein { get; set; } = 0;
+
+        public int Fat { get; set; } = 0; 
+
         // public ICollection<RecipeCategory> RecipeCategories { get; set; } = new List<RecipeCategory>();
         // public ICollection<RecipeTag> RecipeTags { get; set; } = new List<RecipeTag>();
         // public string? Notes { get; set; }

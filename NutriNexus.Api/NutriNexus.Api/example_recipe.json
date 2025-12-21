@@ -1,0 +1,29 @@
+﻿{
+  "name": "example recipe",
+  "imageUrl": "exampleUrl",
+  "description": "description text",
+  "rating": 4.8,
+  "prepTime": "00:10:00",
+  "cookTime": "00:20:00",
+  "totalTime": "00:30:00",
+  "servingSize": 4,
+  "course": "dinner",
+  "cusine": "italian",
+  "ingredients": [
+    {
+      "name": "spaghetti",
+      "amount": 16,
+      "unit": "oz"
+    },
+    {
+      "name": "Lemon",
+      "amount": 1,
+      "unit": "large"
+    }
+  ],
+  "directions": [
+    "step 1",
+    "step 2",
+    "step 3"
+  ]
+}
