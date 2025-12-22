@@ -21,7 +21,7 @@ namespace NutriNexusAPI.Data
             modelBuilder.Entity<Recipe>().HasData(
                 new
                 {
-                    Id = 1,
+                    RecipeId = 1,
                     Name = "The Best Chocolate Chip Cookie Recipe Ever",
                     Rating = 4.99m,
                     ImageUrl = "/chocolate-chip-cookie.jpg",
@@ -32,17 +32,18 @@ namespace NutriNexusAPI.Data
                     Description = "This is the best chocolate chip cookie recipe ever. No funny ingredients, no chilling time, etc. Just a simple, straightforward, amazingly delicious, doughy yet still fully cooked, chocolate chip cookie that turns out perfectly every single time!",
                     Course = "Dessert",
                     Cuisine = "American",
-                    Directions = new List<string> {
-                        "cookie 1",
-                        "cookie 2",
-                        "cookie 3"
-                    },
                     Calories = 100,
                     Carbs = 100,
                     Protein = 100,
                     Fat = 100
                 
                 }
+            );
+
+            modelBuilder.Entity<Direction>().HasData(
+                new { Id = 1, RecipeId = 1, StepNumber = 1, Instruction = "cookie 1" },
+                new { Id = 2, RecipeId = 1, StepNumber = 2, Instruction = "cookie 2" },
+                new { Id = 3, RecipeId = 1, StepNumber = 3, Instruction = "cookie 3" }
             );
 
             modelBuilder.Entity<Ingredient>().HasData(
@@ -58,11 +59,11 @@ namespace NutriNexusAPI.Data
                 new {Id = 10, Name = "chocolate chips", Amount = 2f, Calories = 34.9f, UnitId = 1, RecipeId = 1}
             );
 
-            modelBuilder.Entity<Unit>().HasData(
-                new {Id = 1, Name = "cup"},
-                new {Id = 2, Name = "egg"},
-                new {Id = 3, Name = "tsp"}
-            );
+            //modelBuilder.Entity<Unit>().HasData(
+            //    new {Id = 1, Name = "cup"},
+            //    new {Id = 2, Name = "egg"},
+            //    new {Id = 3, Name = "tsp"}
+            //);
 
         }
     }

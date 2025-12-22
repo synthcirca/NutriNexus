@@ -9,7 +9,7 @@ namespace NutriNexusAPI.DTO;
 public record class CreateRecipeDTO(
     /*---- REQUIRED -----*/
     [Required][StringLength(50)] string Name,
-    [Required] List<string> Ingredients,
+    [Required] List<CreateRecipeIngredientDTO> Ingredients,
     [Required] List<string> Directions,
 
     /*---- OPTIONAL -----*/
@@ -26,5 +26,7 @@ public record class CreateRecipeDTO(
 );
 
 public record class CreateRecipeIngredientDTO(
-	[Required] string Name
+	[Required] string Name,
+    [Required] float? Amount,
+    string Unit
 );

@@ -1,4 +1,7 @@
-﻿using NutriNexusAPI.DTO;
+﻿using Microsoft.EntityFrameworkCore;
+using NutriNexus.Api.Entities;
+using NutriNexusAPI.Data;
+using NutriNexusAPI.DTO;
 using NutriNexusAPI.Entities;
 
 namespace NutriNexusAPI.Mapping
@@ -16,21 +19,57 @@ namespace NutriNexusAPI.Mapping
         //     };
         // }
 
-        //public static Recipe ToEntity(this CreateRecipeDTO newRecipe)
-        //{
-        //    return new Recipe()
-        //    {
-        //        Name = newRecipe.Name,
-        //        Rating = 0,
-        //        ImageUrl = newRecipe. "genericImg",
+        public static async Task<Recipe> ToEntityAsync(this CreateRecipeDTO newRecipe, MealAppContext db)
+        {
+            var recipe =  new Recipe()
+            {
+                Name = newRecipe.Name,
+                ImageUrl = newRecipe.ImgUrl != null ? newRecipe.ImgUrl : "genericImg",
+                Description = newRecipe.Description,
+                Rating = newRecipe.Rating,
+                PrepTime = newRecipe.PrepTime,
+                CookTime = newRecipe.CookTime,
+                TotalTime = newRecipe.TotalTime,
+                ServingSize = newRecipe.ServingSize, 
+                Course = newRecipe.Course,
+                Cuisine = newRecipe.Cuisine,
 
+                Directions = newRecipe.Directions?.Select((step, index) => new Direction
+                {
+                    StepNumber = index + 1,
+                    Instruction = step
+                }).ToList() ?? new List<Direction>()
+            };
 
-        //        RecipeSteps = recipe.Steps.Select(i => new RecipeStep
-        //        {
-        //            Description = i.Description
-        //        }).ToList()
-        //    };
-        //}
+            // Process ingredients
+            foreach (var ingredientRequest in newRecipe.Ingredients ?? new List<CreateRecipeIngredientDTO>())
+            {
+                // Try to find existing ingredient by name (case-insensitive)
+                var ingredient = await db.Ingredients
+                    .FirstOrDefaultAsync(i => i.Name.ToLower() == ingredientRequest.Name.ToLower());
+
+                // If ingredient doesn't exist, create it
+                if (ingredient == null)
+                {
+                    ingredient = new Ingredient
+                    {
+                        Name = ingredientRequest.Name,
+                        Calories = null // To be populated later
+                    };
+                    db.Ingredients.Add(ingredient);
+                }
+
+                // Create the recipe-ingredient relationship
+                recipe.RecipeIngredients.Add(new RecipeIngredient
+                {
+                    Ingredient = ingredient,
+                    Amount = ingredientRequest.Amount,
+                    Unit = ingredientRequest.Unit
+                });
+            }
+
+            return recipe;
+        }
 
         // //want to create this with an ID because the user is trying to create a new game
         // public static Game ToEntity(this UpdateGameDTO game, int id)
@@ -51,7 +90,7 @@ namespace NutriNexusAPI.Mapping
 
             return new RecipeSummaryDTO
             (
-                recipe.Id,
+                recipe.RecipeId,
                 recipe.Name,
                 recipe.ImageUrl,
                 recipe.Description,
@@ -93,15 +132,5 @@ namespace NutriNexusAPI.Mapping
         //    );
         //}
 
-        // public static GameDetailsDTO ToGameDetailsDTO(this Game game)
-        // {
-        //     return new GameDetailsDTO(
-        //         game.Id,
-        //         game.Name,
-        //         game.GenreId,
-        //         game.Price,
-        //         game.ReleaseDate
-        //     );
-        // }
     }
 }

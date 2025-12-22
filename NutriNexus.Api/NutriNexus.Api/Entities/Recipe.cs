@@ -6,7 +6,7 @@ namespace NutriNexusAPI.Entities
 {
     public class Recipe
     {
-        public int Id { get; set; }
+        public int RecipeId { get; set; }
 
         [Required]
         [MaxLength(200)]
@@ -27,8 +27,8 @@ namespace NutriNexusAPI.Entities
         public string? Cuisine {get; set;}
 
         //public ICollection<Equipment> Equipment { get; set; } = new List<Equipment>();
-        public ICollection<RecipeIngredient> Ingredients { get; set; } = new List<RecipeIngredient>();
-        public ICollection<string> Directions { get; set; } = new List<string>();
+        public ICollection<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
+        public ICollection<Direction> Directions { get; set; } = new List<Direction>();
         
         //Nutrition Information
         public int Calories { get; set; } = 0;
