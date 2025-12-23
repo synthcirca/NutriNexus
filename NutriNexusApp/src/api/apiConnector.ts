@@ -1,24 +1,25 @@
-//import axios, { type AxiosResponse } from 'axios';
-//import { API_BASE_URL } from '../router/routes';
-//import type { RecipeDto } from '../models/recipeDto';
+import axios, { type AxiosResponse } from 'axios';
+import { API_BASE_URL } from '../router/routes';
+import type { RecipeDto } from '../models/recipeDto';
+import type { Recipe } from '@/models/Recipe';
 //import type { GetGamesResponse } from "../models/getGamesResponse";
 
 const apiConnector = {
-  // getRecipes: async (): Promise<RecipeDto[]> => {
-  //   try {
-  //     const response: AxiosResponse = await axios.get(`${API_BASE_URL}/meals`);
-  //     console.log(response.data);
-  //     console.log(response.data.recipeDtos);
-  //     const recipe = response.data.map((recipe) => ({
-  //       ...recipe,
-  //     }));
-  //     console.log(recipe);
-  //     return recipe;
-  //   } catch (error) {
-  //     console.log('Error fetching recipes:', error);
-  //     throw error;
-  //   }
-  // },
+  getRecipes: async (): Promise<Recipe[]> => {
+    try {
+      const response: AxiosResponse = await axios.get(`${API_BASE_URL}/meals`);
+      console.log(response.data);
+      console.log(response.data.recipeDtos);
+      const recipe = response.data.map((recipe: Recipe) => ({
+        ...recipe,
+      }));
+      console.log(recipe);
+      return recipe;
+    } catch (error) {
+      console.log('Error fetching recipes:', error);
+      throw error;
+    }
+  },
   // deleteRecipe: async (recipeId: number): Promise<void> => {
   //   try {
   //     await axios.delete<number>(`${API_BASE_URL}/meals/${recipeId}`);
