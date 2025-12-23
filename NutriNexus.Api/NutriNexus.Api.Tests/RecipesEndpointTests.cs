@@ -132,7 +132,6 @@ public class RecipesEndpointTests : IClassFixture<MealAppFactory>
 
 
     //////////////////////////////////// READ //////////////////////////////////
-
     [Fact]
     public async Task GetRecipe_ReturnsRecipeWithCorrectContract()
     {
@@ -191,8 +190,8 @@ public class RecipesEndpointTests : IClassFixture<MealAppFactory>
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
-    //////////////////////////////////// UPDATE //////////////////////////////////
 
+    //////////////////////////////////// UPDATE //////////////////////////////////
     [Fact]
     public async Task UpdateRecipe_WithValidData_ReturnsUpdatedRecipe()
     {
@@ -307,8 +306,8 @@ public class RecipesEndpointTests : IClassFixture<MealAppFactory>
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
-    //////////////////////////////////// DELETE //////////////////////////////////
 
+    //////////////////////////////////// DELETE //////////////////////////////////
     [Fact]
     public async Task DeleteRecipe_ExistingRecipe_Returns204()
     {
