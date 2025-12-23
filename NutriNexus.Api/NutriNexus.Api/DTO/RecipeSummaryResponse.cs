@@ -2,7 +2,7 @@ using NutriNexusAPI.Entities;
 
 namespace NutriNexusAPI.DTO;
 
-public record class RecipeSummaryDTO(
+public record class RecipeSummaryResponse(
 	int Id,
 	string Name,
     string ImageUrl,

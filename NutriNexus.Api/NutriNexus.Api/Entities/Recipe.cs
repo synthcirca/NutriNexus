@@ -26,9 +26,9 @@ namespace NutriNexusAPI.Entities
         public string? Course {get; set;}
         public string? Cuisine {get; set;}
 
-        //public ICollection<Equipment> Equipment { get; set; } = new List<Equipment>();
+        public ICollection<RecipeEquipment> RecipeEquipment { get; set; } = new List<RecipeEquipment>();
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; } = new List<RecipeIngredient>();
-        public ICollection<Direction> Directions { get; set; } = new List<Direction>();
+        public ICollection<RecipeInstruction> RecipeInstructions { get; set; } = new List<RecipeInstruction>();
         
         //Nutrition Information
         public int Calories { get; set; } = 0;
