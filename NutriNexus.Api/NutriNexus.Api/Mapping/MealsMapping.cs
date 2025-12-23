@@ -62,6 +62,39 @@ namespace NutriNexusAPI.Mapping
                 });
             }
 
+            // Process Equipment
+            foreach (var equipmentRequest in newRecipe.Equipment ?? new List<RecipeEquipmentCreateRequest>())
+            {
+                // Try to find existing equipment by name (case-insensitive)
+                var equipment = await db.Equipment
+                    .FirstOrDefaultAsync(i => i.Name.ToLower() == equipmentRequest.Name.ToLower());
+
+                // If equipment doesn't exist, create it
+                if (equipment == null)
+                {
+                    equipment = new Equipment
+                    {
+                        Name = equipmentRequest.Name,
+                        Description = equipmentRequest.Description,
+                        SourceUrl = equipmentRequest.SourceUrl
+                    };
+                    db.Equipment.Add(equipment);
+                }
+
+                // Create the recipe-ingredient relationship
+                recipe.RecipeEquipment.Add(new RecipeEquipment
+                {
+                    RecipeId = recipe.RecipeId,
+                    Recipe = recipe,
+                    EquipmentId = equipment.Id,
+                    Equipment = equipment,
+                    Quantity = equipmentRequest.Quantity,
+                    Notes = equipmentRequest.Notes
+                });
+            }
+
+            
+
             return recipe;
         }
 
@@ -97,6 +130,7 @@ namespace NutriNexusAPI.Mapping
                 .ToList() ?? new List<RecipeIngredientResponse>();
 
             Debug.WriteLine($"First Ingredient again: {ingredientsList.First().Name}");
+            Debug.WriteLine($"ServingSize: {recipe.ServingSize}");
             var resp =  new RecipeDetailResponse
             {
                 Id = recipe.RecipeId,
@@ -134,7 +168,9 @@ namespace NutriNexusAPI.Mapping
                 .Select(d => new RecipeEquipmentResponse
                 {
                     Name = d.Equipment.Name,
-                    ImageUrl = d.Equipment.ImageUrl,
+                    SourceUrl = d.Equipment.SourceUrl,
+                    Quantity = d.Quantity,
+                    Notes = d.Notes
                 })
                 .ToList() ?? new List<RecipeEquipmentResponse>()
             };

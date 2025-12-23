@@ -65,7 +65,7 @@ namespace NutriNexusAPI.Endpoints
                 return Results.CreatedAtRoute(
                     GetMealAppEndpointName,
                     new { id = recipe.RecipeId },
-                    recipe.ToRecipeSummaryDTO());
+                    recipe.ToRecipeDetailDTO());
 
             }).WithParameterValidation();
 
@@ -93,6 +93,17 @@ namespace NutriNexusAPI.Endpoints
                 existingRecipe.ServingSize = request.ServingSize;
                 existingRecipe.Course = request.Course;
                 existingRecipe.Cuisine = request.Cuisine;
+
+                // Remove existing instructions
+
+                dbContext.RecipeInstructions.RemoveRange(existingRecipe.RecipeInstructions);
+
+
+                existingRecipe.RecipeInstructions = request.RecipeInstructions?.Select((i) => new RecipeInstruction
+                {
+                    StepNumber = i.StepNumber,
+                    Instruction = i.Instruction
+                }).ToList() ?? new List<RecipeInstruction>();
                 //existingRecipe.Author = request.Author;
                 //existingRecipe.SourceUrl = request.SourceUrl;
                 //existingRecipe.VideoUrl = request.VideoUrl;
@@ -102,7 +113,7 @@ namespace NutriNexusAPI.Endpoints
                 dbContext.RecipeIngredients.RemoveRange(existingRecipe.RecipeIngredients);
 
                 // Add new ingredients
-                foreach (var ingredientRequest in request.Ingredients ?? new List<RecipeIngredientRequest>())
+                foreach (var ingredientRequest in request.RecipeIngredients ?? new List<RecipeIngredientCreateRequest>())
                 {
                     var ingredient = await dbContext.Ingredients
                         .FirstOrDefaultAsync(i => i.Name.ToLower() == ingredientRequest.Name.ToLower());
@@ -120,7 +131,7 @@ namespace NutriNexusAPI.Endpoints
                     existingRecipe.RecipeIngredients.Add(new RecipeIngredient
                     {
                         Ingredient = ingredient,
-                        Quantity = ingredientRequest.Amount,
+                        Quantity = ingredientRequest.Quantity,
                         Unit = ingredientRequest.Unit,
                         Note = ingredientRequest.Note
                     });
@@ -130,7 +141,7 @@ namespace NutriNexusAPI.Endpoints
                 dbContext.RecipeEquipment.RemoveRange(existingRecipe.RecipeEquipment);
 
                 // Add new equipment
-                foreach (var equipmentRequest in request.Equipment ?? new List<RecipeEquipmentRequest>())
+                foreach (var equipmentRequest in request.RecipeEquipment ?? new List<RecipeEquipmentCreateRequest>())
                 {
                     var equipment = await dbContext.Equipment
                         .FirstOrDefaultAsync(e => e.Name.ToLower() == equipmentRequest.Name.ToLower());
@@ -139,33 +150,22 @@ namespace NutriNexusAPI.Endpoints
                     {
                         equipment = new Equipment
                         {
-                            Name = equipmentRequest.Name
+                            Name = equipmentRequest.Name,
+                            Description = equipmentRequest.Description,
+                            SourceUrl = equipmentRequest.SourceUrl
                         };
                         dbContext.Equipment.Add(equipment);
                     }
 
                     existingRecipe.RecipeEquipment.Add(new RecipeEquipment
                     {
+                        RecipeId = existingRecipe.RecipeId,
+                        Recipe = existingRecipe,
+                        EquipmentId = equipment.Id,
                         Equipment = equipment,
                         Quantity = equipmentRequest.Quantity,
                         Notes = equipmentRequest.Notes
                     });
-                }
-
-                // Remove existing instructions
-                dbContext.RecipeInstructions.RemoveRange(existingRecipe.RecipeInstructions);
-
-                // Add new instructions
-                if (request.Directions != null)
-                {
-                    for (int i = 0; i < request.Directions.Count; i++)
-                    {
-                        existingRecipe.RecipeInstructions.Add(new RecipeInstruction
-                        {
-                            StepNumber = i + 1,
-                            Instruction = request.Directions[i]
-                        });
-                    }
                 }
 
                 await dbContext.SaveChangesAsync();
@@ -175,37 +175,24 @@ namespace NutriNexusAPI.Endpoints
             .WithName("UpdateRecipe")
             .WithOpenApi();
 
+            group.MapDelete("/{id}", async (int id, MealAppContext dbContext) =>
+            {
+                var recipe = await dbContext.Recipes
+                    .Include(r => r.RecipeIngredients)
+                    .Include(r => r.RecipeEquipment)
+                    .Include(r => r.RecipeInstructions)
+                    .FirstOrDefaultAsync(r => r.RecipeId == id);
 
-            // group.MapPut("/{id}", async (int id, UpdateGameDTO updatedGame, GameStoreContext dbContext) =>
-            // {
-            //     var existingGame = await dbContext.Games.FindAsync(id);
-            //     if (existingGame is null)
-            //     {
-            //         return Results.NotFound(); //could also just create the resource
-            //                                    //if you create though a database may just make up an ID
-            //     }
+                if (recipe is null)
+                    return Results.NotFound();
 
-            //     //locate existing entity inside of dbcontext and then update
-            //     dbContext.Entry(existingGame)
-            //         .CurrentValues
-            //         .SetValues(updatedGame.ToEntity(id));
+                dbContext.Recipes.Remove(recipe);
+                await dbContext.SaveChangesAsync();
 
-            //     await dbContext.SaveChangesAsync();
-            //     return Results.NoContent();
-            // }).WithParameterValidation();
-
-            // ////////////////////// DELETE games/1
-            // group.MapDelete("/{id}", async (int id, GameStoreContext dbContext) =>
-            // {
-            //     //it doesn't matter if you don't find anything here, either way its not there any more
-            //     await dbContext.Games
-            //         .Where(game => game.Id == id)
-            //         .ExecuteDeleteAsync(); //this is called match delete. efficient because you don't have to first find things in the api code
-            //     return Results.NoContent();
-            // }
-            // );
-
-
+                return Results.NoContent();
+            })
+            .WithName("DeleteRecipe")
+            .WithOpenApi();
             return group;
         }
     }

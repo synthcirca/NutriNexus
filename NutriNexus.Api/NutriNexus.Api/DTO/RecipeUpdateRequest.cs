@@ -1,4 +1,6 @@
-﻿namespace NutriNexus.Api.DTO
+﻿using NutriNexusAPI.DTO;
+
+namespace NutriNexus.Api.DTO
 {
     // For PUT (full update)
     public class RecipeUpdateRequest
@@ -17,24 +19,8 @@
         public string SourceUrl { get; set; }
         public string VideoUrl { get; set; }
         public string Notes { get; set; }
-        public List<RecipeIngredientRequest> Ingredients { get; set; }
-        public List<RecipeEquipmentRequest> Equipment { get; set; }
-        public List<string> Directions { get; set; }
-    }
-
-    // Reuse from create
-    public class RecipeIngredientRequest
-    {
-        public string Name { get; set; }
-        public float Amount { get; set; }
-        public string Unit { get; set; }
-        public string? Note { get; set; }
-    }
-
-    public class RecipeEquipmentRequest
-    {
-        public string Name { get; set; }
-        public int? Quantity { get; set; }
-        public string? Notes { get; set; }
+        public List<RecipeIngredientCreateRequest> RecipeIngredients { get; set; }
+        public List<RecipeEquipmentCreateRequest> RecipeEquipment { get; set; }
+        public List<RecipeInstructionCreateRequest> RecipeInstructions { get; set; }
     }
 }

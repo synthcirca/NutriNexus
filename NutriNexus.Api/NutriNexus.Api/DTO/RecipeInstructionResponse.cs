@@ -2,7 +2,8 @@
 {
     public record RecipeInstructionResponse
     {
-        public int StepNumber { get; init; }
-        public string Instruction { get; init; }
+        public int Id { get; set; }
+        public int StepNumber { get; set; }
+        public string Instruction { get; set; }
     }
 }

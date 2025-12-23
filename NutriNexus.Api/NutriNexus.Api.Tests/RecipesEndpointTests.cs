@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using NutriNexus.Api.DTO;
 using NutriNexusAPI.Data;
+using NutriNexusAPI.DTO;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -56,77 +57,78 @@ public class RecipesEndpointTests : IClassFixture<MealAppFactory>
     }
 
     ///////////////////////////////////// CREATE //////////////////////////////////
-    //[Fact]
-    //public async Task CreateRecipe_WithValidData_ReturnsCreatedRecipe()
-    //{
-    //    // Arrange
+    [Fact]
+    public async Task CreateRecipe_WithValidData_ReturnsCreatedRecipe()
+    {
+        // Arrange
+        RecipeCreateRequest newRecipe = new RecipeCreateRequest
+        (
+            "Test Recipe",
+            new List<RecipeIngredientCreateRequest>
+            {
+                new("ingredient 1", 1, "cup", "notes here"),
+                new("ingredient 1", 1, "cup", "notes here")
+            },
+            new List<RecipeInstructionCreateRequest>
+            {
+                new(1, "test instruction 1"),
+                new(2, "test instruction 2")
+            },
+            new List<RecipeEquipmentCreateRequest>
+            {
+                new("pot", "for boiling water", "get-url-equipment-here.com", 1, "stuff"),
+                new("pot", "for boiling water", "get-url-equipment-here.com", 1, "stuff")
+            },
+            "/test.jpg",
+            "Test description",
+            4.5m,
+            10,
+            20,
+            30,
+            4,
+            "Dinner",
+            "Italian",
+            "Test Author",
+            "test source",
+            "video url",
+            "notes here"
+        );
 
-    //    RecipeCreateRequest newRecipe = new RecipeCreateRequest
-    //    (
-    //        "Test Recipe",
-    //        new List<RecipeIngredientCreateRequest>
-    //        {
-    //            new("ingredient 1", 1, "cup", "notes here"),
-    //            new("ingredient 1", 1, "cup", "notes here")
-    //        },
-    //        new List<RecipeInstructionCreateRequest>
-    //        {
-    //            new(1, "test instruction 1"),
-    //            new(2, "test instruction 2")
-    //        },
-    //        new List<RecipeEquipmentCreateRequest>
-    //        {
-    //            new("pot", "for boiling water", "get-url-equipment-here.com", 1, "stuff"),
-    //            new("pot", "for boiling water", "get-url-equipment-here.com", 1, "stuff")
-    //        },
-    //        "/test.jpg",
-    //        "Test description",
-    //        4.5m,
-    //        10,
-    //        20,
-    //        30,
-    //        4,
-    //        "Dinner",
-    //        "Italian",
-    //        "Test Author",
-    //        "",
-    //        "",
-    //        ""
-    //    );
+        // Act
+        var response = await _client.PostAsJsonAsync("/meals", newRecipe);
 
-    //    // Act
-    //    var response = await _client.PostAsJsonAsync("/meals", newRecipe);
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
 
-    //    // Assert
-    //    response.StatusCode.Should().Be(HttpStatusCode.Created);
+        var createdRecipe = await response.Content.ReadFromJsonAsync<RecipeDetailResponse>();
 
-    //    var createdRecipe = await response.Content.ReadFromJsonAsync<RecipeDetailResponse>();
+        // Verify response contract
+        createdRecipe.Should().NotBeNull();
+        createdRecipe.Id.Should().BeGreaterThan(0);
+        createdRecipe.Name.Should().Be(newRecipe.Name);
+        createdRecipe.Description.Should().Be(newRecipe.Description);
+        createdRecipe.Rating.Should().Be(newRecipe.Rating);
+        createdRecipe.ServingSize.Should().Be(newRecipe.ServingSize);
 
-    //    // Verify response contract
-    //    createdRecipe.Should().NotBeNull();
-    //    createdRecipe.Id.Should().BeGreaterThan(0);
-    //    createdRecipe.Name.Should().Be(newRecipe.Name);
-    //    createdRecipe.Description.Should().Be(newRecipe.Description);
-    //    createdRecipe.Rating.Should().Be(newRecipe.Rating);
-    //    createdRecipe.ServingSize.Should().Be(newRecipe.ServingSize);
+        createdRecipe.Ingredients.Should().HaveCount(2);
+        createdRecipe.Ingredients[0].Name.Should().Be(newRecipe.Ingredients[0].Name);
+        createdRecipe.Ingredients[0].Quantity.Should().Be(newRecipe.Ingredients[0].Quantity);
+        createdRecipe.Ingredients[0].Unit.Should().Be(newRecipe.Ingredients[0].Unit);
+        //createdRecipe.Ingredients[0].Calories.Should().Be(newRecipe.Ingredients[0].);
 
-    //    createdRecipe.Ingredients.Should().HaveCount(2);
-    //    createdRecipe.Ingredients[0].Name.Should().Be("Pasta");
-    //    createdRecipe.Ingredients[0].Quantity.Should().Be(200);
-    //    createdRecipe.Ingredients[0].Unit.Should().Be("g");
+        createdRecipe.Equipment.Should().HaveCount(2);
+        createdRecipe.Equipment[0].Name.Should().Be(newRecipe.Equipment[0].Name);
+        createdRecipe.Equipment[0].Quantity.Should().Be(newRecipe.Equipment[0].Quantity);
+        createdRecipe.Equipment[0].Notes.Should().Be(newRecipe.Equipment[0].Notes);
 
-    //    createdRecipe.Equipment.Should().HaveCount(2);
-    //    createdRecipe.Equipment[0].Name.Should().Be("Pot");
-    //    createdRecipe.Equipment[0].Quantity.Should().Be(1);
+        createdRecipe.RecipeInstructions.Should().HaveCount(2);
+        createdRecipe.RecipeInstructions[0].StepNumber.Should().Be(newRecipe.Instructions[0].StepNumber);
+        createdRecipe.RecipeInstructions[0].Instruction.Should().Be(newRecipe.Instructions[0].Instruction);
 
-    //    createdRecipe.Directions.Should().HaveCount(3);
-    //    createdRecipe.Directions[0].StepNumber.Should().Be(1);
-    //    createdRecipe.Directions[0].Instruction.Should().Be("Step 1");
-
-    //    // Verify Location header
-    //    response.Headers.Location.Should().NotBeNull();
-    //    response.Headers.Location!.ToString().Should().Contain($"/recipes/{createdRecipe.Id}");
-    //}
+        // Verify Location header
+        response.Headers.Location.Should().NotBeNull();
+        response.Headers.Location!.ToString().Should().Contain($"/meals/{createdRecipe.Id}");
+    }
 
 
     //////////////////////////////////// READ //////////////////////////////////
@@ -191,137 +193,170 @@ public class RecipesEndpointTests : IClassFixture<MealAppFactory>
 
     //////////////////////////////////// UPDATE //////////////////////////////////
 
-    //[Fact]
-    //public async Task UpdateRecipe_WithValidData_ReturnsUpdatedRecipe()
-    //{
-    //    // Arrange
-    //    var recipeId = 1;
-    //    var updateRequest = new RecipeUpdateRequest
-    //    {
-    //        Name = "Updated Recipe Name",
-    //        ImageUrl = "/updated.jpg",
-    //        Description = "Updated description",
-    //        Rating = 5.0m,
-    //        PrepTime = 15,
-    //        CookTime = 25,
-    //        TotalTime = 40,
-    //        ServingSize = 6,
-    //        Course = "Lunch",
-    //        Cuisine = "French",
-    //        Author = "Updated Author",
-    //        SourceUrl = "http://example.com",
-    //        VideoUrl = "http://example.com/video",
-    //        Notes = "Updated notes",
-    //        Ingredients = new List<IngredientRequest>
-    //        {
-    //            new() { Name = "New Ingredient", Amount = 100, Unit = "g" }
-    //        },
-    //        Equipment = new List<EquipmentRequest>
-    //        {
-    //            new() { Name = "New Equipment", Quantity = 1 }
-    //        },
-    //        Directions =
-    //        [
-    //            "New Step 1",
-    //            "New Step 2"
-    //        ]
-    //    };
+    [Fact]
+    public async Task UpdateRecipe_WithValidData_ReturnsUpdatedRecipe()
+    {
+        // Arrange
+        var recipeId = 1;
+        var updateRequest = new RecipeUpdateRequest
+        {
+            Name = "Updated Recipe Name",
+            ImageUrl = "/updated.jpg",
+            Description = "Updated description",
+            Rating = 5.0m,
+            PrepTime = 15,
+            CookTime = 25,
+            TotalTime = 40,
+            ServingSize = 6,
+            Course = "Lunch",
+            Cuisine = "French",
+            Author = "Updated Author",
+            SourceUrl = "http://example.com",
+            VideoUrl = "http://example.com/video",
+            Notes = "Updated notes",
+            RecipeIngredients = new List<RecipeIngredientCreateRequest>
+            {
+                new("New Ingredient", 100, "g", "notes")
+            },
+            RecipeEquipment = new List<RecipeEquipmentCreateRequest>
+            {
+                new("New Equipment","equipmnent description", "source url", 3, "notes")
+            },
+            RecipeInstructions = new List<RecipeInstructionCreateRequest>
+            {
+                new(1, "step")
+            }
+        };
 
-    //    // Act
-    //    var response = await _client.PutAsJsonAsync($"/recipes/{recipeId}", updateRequest);
+        // Act
+        var response = await _client.PutAsJsonAsync($"/meals/{recipeId}", updateRequest);
 
-    //    // Assert
-    //    response.StatusCode.Should().Be(HttpStatusCode.OK);
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-    //    var updatedRecipe = await response.Content.ReadFromJsonAsync<RecipeDetailDTO>();
+        var updatedRecipe = await response.Content.ReadFromJsonAsync<RecipeDetailResponse>();
 
-    //    // Verify contract
-    //    updatedRecipe.Should().NotBeNull();
-    //    updatedRecipe.Id.Should().Be(recipeId);
-    //    updatedRecipe.Name.Should().Be(updateRequest.Name);
-    //    updatedRecipe.Description.Should().Be(updateRequest.Description);
-    //    updatedRecipe.Rating.Should().Be(updateRequest.Rating);
+        // Verify contract
+        updatedRecipe.Should().NotBeNull();
+        updatedRecipe.Id.Should().Be(recipeId);
+        updatedRecipe.Name.Should().Be(updateRequest.Name);
+        updatedRecipe.Description.Should().Be(updateRequest.Description);
+        updatedRecipe.Rating.Should().Be(updateRequest.Rating);
+        updatedRecipe.PrepTime.Should().Be(updateRequest.PrepTime);
+        updatedRecipe.CookTime.Should().Be(updateRequest.CookTime);
+        updatedRecipe.TotalTime.Should().Be(updateRequest.TotalTime);
+        updatedRecipe.ServingSize.Should().Be(updateRequest.ServingSize);
+        updatedRecipe.Course.Should().Be(updateRequest.Course);
+        updatedRecipe.Cuisine.Should().Be(updateRequest.Cuisine);
 
-    //    updatedRecipe.Ingredients.Should().HaveCount(1);
-    //    updatedRecipe.Ingredients[0].Name.Should().Be("New Ingredient");
+        updatedRecipe.Ingredients.Should().HaveCount(1);
+        updatedRecipe.Ingredients[0].Name.Should().Be(updateRequest.RecipeIngredients[0].Name);
+        updatedRecipe.Ingredients[0].Quantity.Should().Be(updateRequest.RecipeIngredients[0].Quantity);
+        updatedRecipe.Ingredients[0].Unit.Should().Be(updateRequest.RecipeIngredients[0].Unit);
+        //updatedRecipe.Ingredients[0].Note.Should().Be(updateRequest.RecipeIngredients[0].Name);
 
-    //    updatedRecipe.Equipment.Should().HaveCount(1);
-    //    updatedRecipe.Equipment[0].Name.Should().Be("New Equipment");
+        updatedRecipe.Equipment.Should().HaveCount(1);
+        updatedRecipe.Equipment[0].Name.Should().Be(updateRequest.RecipeEquipment[0].Name);
+        //updatedRecipe.Equipment[0].Description.Should().Be(updateRequest.RecipeEquipment[0].Description);
+        updatedRecipe.Equipment[0].SourceUrl.Should().Be(updateRequest.RecipeEquipment[0].SourceUrl);
+        updatedRecipe.Equipment[0].Quantity.Should().Be(updateRequest.RecipeEquipment[0].Quantity);
+        updatedRecipe.Equipment[0].Notes.Should().Be(updateRequest.RecipeEquipment[0].Notes);
 
-    //    updatedRecipe.Directions.Should().HaveCount(2);
-    //    updatedRecipe.Directions[0].Instruction.Should().Be("New Step 1");
-    //}
+        updatedRecipe.RecipeInstructions.Should().HaveCount(1);
+        updatedRecipe.RecipeInstructions[0].StepNumber.Should().Be(updateRequest.RecipeInstructions[0].StepNumber);
+        updatedRecipe.RecipeInstructions[0].Instruction.Should().Be(updateRequest.RecipeInstructions[0].Instruction);
+    }
 
-    //[Fact]
-    //public async Task UpdateRecipe_NotFound_Returns404()
-    //{
-    //    // Arrange
-    //    var updateRequest = new RecipeUpdateRequest
-    //    {
-    //        Name = "Test",
-    //        ImageUrl = "/test.jpg",
-    //        Description = "Test",
-    //        Rating = 4.0m,
-    //        PrepTime = 10,
-    //        CookTime = 10,
-    //        TotalTime = 20,
-    //        ServingSize = 4,
-    //        Course = "Dinner",
-    //        Cuisine = "Italian",
-    //        Author = "Test",
-    //        SourceUrl = "",
-    //        VideoUrl = "",
-    //        Notes = "",
-    //        Ingredients = new List<IngredientRequest>(),
-    //        Equipment = new List<EquipmentRequest>(),
-    //        Directions = new List<string>()
-    //    };
+    [Fact]
+    public async Task UpdateRecipe_NotFound_Returns404()
+    {
+        // Arrange
+        var updateRequest = new RecipeUpdateRequest
+        {
+            Name = "Updated Recipe Name",
+            ImageUrl = "/updated.jpg",
+            Description = "Updated description",
+            Rating = 5.0m,
+            PrepTime = 15,
+            CookTime = 25,
+            TotalTime = 40,
+            ServingSize = 6,
+            Course = "Lunch",
+            Cuisine = "French",
+            Author = "Updated Author",
+            SourceUrl = "http://example.com",
+            VideoUrl = "http://example.com/video",
+            Notes = "Updated notes",
+            RecipeIngredients = new List<RecipeIngredientCreateRequest>
+            {
+                new("New Ingredient", 100, "g", "notes")
+            },
+            RecipeEquipment = new List<RecipeEquipmentCreateRequest>
+            {
+                new("New Equipment","equipmnent description", "source url", 3, "notes")
+            },
+            RecipeInstructions = new List<RecipeInstructionCreateRequest>
+            {
+                new(1, "step")
+            }
+        };
+        // Act
+        var response = await _client.PutAsJsonAsync("/meals/99999", updateRequest);
 
-    //    // Act
-    //    var response = await _client.PutAsJsonAsync("/recipes/99999", updateRequest);
-
-    //    // Assert
-    //    response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-    //}
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
 
     //////////////////////////////////// DELETE //////////////////////////////////
 
-    //[Fact]
-    //public async Task DeleteRecipe_ExistingRecipe_Returns204()
-    //{
-    //    // Arrange - Create a recipe to delete
-    //    var newRecipe = new RecipeCreateRequest
-    //    {
-    //        Name = "Recipe to Delete",
-    //        ImageUrl = "/delete.jpg",
-    //        Description = "Will be deleted",
-    //        Rating = 3.0m,
-    //        PrepTime = 5,
-    //        CookTime = 10,
-    //        TotalTime = 15,
-    //        ServingSize = 2,
-    //        Course = "Snack",
-    //        Cusine = "American",
-    //        Author = "Test",
-    //        SourceUrl = "",
-    //        VideoUrl = "",
-    //        Notes = "",
-    //        Ingredients = new List<IngredientRequest>(),
-    //        Equipment = new List<EquipmentRequest>(),
-    //        Directions = new List<string> { "Step 1" }
-    //    };
+    [Fact]
+    public async Task DeleteRecipe_ExistingRecipe_Returns204()
+    {
+        // Arrange - Create a recipe to delete
+        RecipeCreateRequest newRecipe = new RecipeCreateRequest
+        (
+            "Test Recipe",
+            new List<RecipeIngredientCreateRequest>
+            {
+                new("ingredient 1", 1, "cup", "notes here"),
+                new("ingredient 1", 1, "cup", "notes here")
+            },
+            new List<RecipeInstructionCreateRequest>
+            {
+                new(1, "test instruction 1"),
+                new(2, "test instruction 2")
+            },
+            new List<RecipeEquipmentCreateRequest>
+            {
+                new("pot", "for boiling water", "get-url-equipment-here.com", 1, "stuff"),
+                new("pot", "for boiling water", "get-url-equipment-here.com", 1, "stuff")
+            },
+            "/test.jpg",
+            "Test description",
+            4.5m,
+            10,
+            20,
+            30,
+            4,
+            "Dinner",
+            "Italian",
+            "Test Author",
+            "test source",
+            "video url",
+            "notes here"
+        );
 
-    //    var createResponse = await _client.PostAsJsonAsync("/recipes", newRecipe);
-    //    var created = await createResponse.Content.ReadFromJsonAsync<RecipeDetailDTO>();
+        var createResponse = await _client.PostAsJsonAsync("/meals", newRecipe);
+        var created = await createResponse.Content.ReadFromJsonAsync<RecipeDetailResponse>();
 
-    //    // Act
-    //    var deleteResponse = await _client.DeleteAsync($"/recipes/{created.Id}");
+        // Act
+        var deleteResponse = await _client.DeleteAsync($"/meals/{created.Id}");
 
-    //    // Assert
-    //    deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        // Assert
+        deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-    //    // Verify it's actually deleted
-    //    var getResponse = await _client.GetAsync($"/recipes/{created.Id}");
-    //    getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
-    //}
+        // Verify it's actually deleted
+        var getResponse = await _client.GetAsync($"/meals/{created.Id}");
+        getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
 }

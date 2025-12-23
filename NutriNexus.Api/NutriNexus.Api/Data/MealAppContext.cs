@@ -45,15 +45,15 @@ namespace NutriNexusAPI.Data
             );
 
             modelBuilder.Entity<Equipment>().HasData(
-                new { Id = 1, Name = "measuring spoons", Description = "Standard measuring spoons", ImageUrl = "https://amzlink.to/az0Tmz0p6RGTA" },
-                new { Id = 2, Name = "measuring cups", Description = "Dry measuring cups", ImageUrl = "https://amzlink.to/az0DjP0Sx7AVd" },
-                new { Id = 3, Name = "electric mixer", Description = "Hand or stand mixer", ImageUrl = "https://amzlink.to/az04r9lAhaKsP" },
-                new { Id = 4, Name = "spatula", Description = "Rubber spatula for mixing", ImageUrl = "https://amzlink.to/az0cHANfPnAKd" },
-                new { Id = 5, Name = "baking sheet", Description = "Standard baking sheet", ImageUrl = "https://amzlink.to/az0h3VEQB4BtJ" },
-                new { Id = 6, Name = "parchment paper", Description = "For lining baking sheets", ImageUrl = "https://amzlink.to/az0e1HAvwbn07" },
-                new { Id = 7, Name = "cookie scoop", Description = "for scooping cookies", ImageUrl = "https://amzlink.to/az0935VbND2Ud" },
-                new { Id = 8, Name = "silicone baking mat", Description = "silicone baking mat", ImageUrl = "https://amzlink.to/az0tZruG7esod" },
-                new { Id = 9, Name = "hand mixer", Description = "for mixing", ImageUrl = "https://amzlink.to/az0GGY6pRrF4W" }
+                new { Id = 1, Name = "measuring spoons", Description = "Standard measuring spoons", SourceUrl = "https://amzlink.to/az0Tmz0p6RGTA" },
+                new { Id = 2, Name = "measuring cups", Description = "Dry measuring cups", SourceUrl = "https://amzlink.to/az0DjP0Sx7AVd" },
+                new { Id = 3, Name = "electric mixer", Description = "Hand or stand mixer", SourceUrl = "https://amzlink.to/az04r9lAhaKsP" },
+                new { Id = 4, Name = "spatula", Description = "Rubber spatula for mixing", SourceUrl = "https://amzlink.to/az0cHANfPnAKd" },
+                new { Id = 5, Name = "baking sheet", Description = "Standard baking sheet", SourceUrl = "https://amzlink.to/az0h3VEQB4BtJ" },
+                new { Id = 6, Name = "parchment paper", Description = "For lining baking sheets", SourceUrl = "https://amzlink.to/az0e1HAvwbn07" },
+                new { Id = 7, Name = "cookie scoop", Description = "for scooping cookies", SourceUrl = "https://amzlink.to/az0935VbND2Ud" },
+                new { Id = 8, Name = "silicone baking mat", Description = "silicone baking mat", SourceUrl = "https://amzlink.to/az0tZruG7esod" },
+                new { Id = 9, Name = "hand mixer", Description = "for mixing", SourceUrl = "https://amzlink.to/az0GGY6pRrF4W" }
             );
 
             modelBuilder.Entity<RecipeEquipment>().HasData(

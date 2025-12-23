@@ -32,7 +32,7 @@ public record class RecipeCreateRequest(
 public record class RecipeEquipmentCreateRequest(
     string Name, 
     string Description,
-    string ImageUrl,
+    string SourceUrl,
     int Quantity,
     string Notes
 );
