@@ -1,34 +1,48 @@
-// export class Recipe {
-//   id: number | undefined;
-//   name: string = '';
-//   description: string = '';
-//   imageUrl: string = '';
-//   timeEstimate: number | undefined;
-//   servingSize: number | undefined;
-//   ingredients: string[] | undefined;
-//   directions: string[] | undefined;
-
-//   constructor(init?: any) {
-//     if (!init) return;
-//     if (init.id) this.id = init.id;
-//     if (init.name) this.name = init.name;
-//     if (init.description) this.description = init.description;
-//     if (init.imageUrl) this.imageUrl = init.imageUrl;
-//     if (init.timeEstimate) this.timeEstimate = init.timeEstimate;
-//     if (init.servingSize) this.servingSize = init.servingSize;
-//     if (init.ingredients) this.ingredients = init.ingredients;
-//     if (init.directions) this.directions = init.directions;
-//   }
-// }
-
-export type Recipe = {
+export type RecipeDetail = {
   id: number | undefined;
   name: string;
-  description: string;
   imageUrl: string;
-  timeEstimate: string | undefined;
+  description: string;
+  rating: number;
+  prepTime: string | undefined;
+  cookTime: string | undefined;
+  totalTime: string | undefined;
   servingSize: number | undefined;
-  ingredients: string[] | undefined;
-  directions: string[] | undefined;
-  rating: number, 
+  course: string;
+  cusine: string;
+
+  ingredients: RecipeIngredient[] | undefined;
+  equpiment: RecipeEquipment[] | undefined;
+  instructions: RecipeInstruction[] | undefined; 
+};
+
+export type RecipeSummary = {
+  id: number | undefined;
+  name: string;
+  imageUrl: string;
+  description: string;
+  rating: number;
+  totalTime: string | undefined;
+};
+
+export type RecipeIngredient = {
+  id: number | undefined;
+  name: string;
+  quantity: number;
+  unit: string;
+  calories: number;
+};
+
+export type RecipeEquipment = {
+  id: number | undefined;
+  name: string;
+  sourceUrl: string;
+  quantity: number;
+  notes: string;
+};
+
+export type RecipeInstruction = {
+  id: number | undefined;
+  stepNumber: number;
+  instruction: string;
 };

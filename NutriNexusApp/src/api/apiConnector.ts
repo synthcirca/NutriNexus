@@ -1,22 +1,36 @@
 import axios, { type AxiosResponse } from 'axios';
 import { API_BASE_URL } from '../router/routes';
-import type { RecipeDto } from '../models/recipeDto';
-import type { Recipe } from '@/models/Recipe';
+//import type { RecipeDto } from '../models/recipeDto';
+import type { RecipeSummary, RecipeDetail } from '@/models/Recipe';
 //import type { GetGamesResponse } from "../models/getGamesResponse";
 
 const apiConnector = {
-  getRecipes: async (): Promise<Recipe[]> => {
+  getRecipes: async (): Promise<RecipeSummary[]> => {
     try {
       const response: AxiosResponse = await axios.get(`${API_BASE_URL}/meals`);
       console.log(response.data);
       console.log(response.data.recipeDtos);
-      const recipe = response.data.map((recipe: Recipe) => ({
+      const recipe = response.data.map((recipe: RecipeSummary) => ({
         ...recipe,
       }));
       console.log(recipe);
       return recipe;
     } catch (error) {
       console.log('Error fetching recipes:', error);
+      throw error;
+    }
+  },
+  getRecipeById: async (
+    recipeId: number
+  ): Promise<RecipeDetail> => {
+    try {
+      const response = await axios.get<RecipeDetail>(
+        `${API_BASE_URL}/meals/${recipeId}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
       throw error;
     }
   },
