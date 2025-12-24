@@ -24,14 +24,51 @@ function App() {
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeSummary | null>(
     null
   );
-  const [isModalOpen, setModalOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(true);
 
-  const [recipe, setRecipe] = useState<RecipeDetail>();
+  const [recipe, setRecipe] = useState<RecipeDetail>({
+    id: -1,
+    name: 'Recipe Title',
+    imageUrl: '/delicious-pasta-dish.jpg',
+    description: 'Add descriptions',
+    rating: -1,
+    prepTime: '00:00:00',
+    cookTime: '00:00:00',
+    totalTime: '00:00:00',
+    servingSize: -1,
+    course: 'choose a course',
+    cusine: 'choose a cusine',
+    ingredients: [
+      {
+        id: -1,
+        name: 'something',
+        quantity: -1,
+        unit: 'something',
+        calories: -1,
+      },
+    ],
+    equpiment: [
+      {
+        id: -1,
+        name: 'something',
+        sourceUrl: 'source',
+        quantity: -1,
+        notes: 'something',
+      },
+    ],
+    instructions: [
+      {
+        id: -1,
+        stepNumber: 1,
+        instruction: 'instruction',
+      },
+    ],
+  });
 
   useEffect(() => {
     const fetchData = async () => {
-      const fetchedRecipes = await apiConnector.getRecipeById(1);
-      setRecipe(fetchedRecipes);
+      const fetchedRecipes = await apiConnector.getRecipes();
+      setRecipes(fetchedRecipes);
     };
 
     fetchData();
@@ -56,12 +93,13 @@ function App() {
         <button onClick={addNewRecipe}>Add New Recipe</button>
         {isModalOpen && <RecipeModal onClose={closeModal} />}
       </div> */}
-      {/* <RecipeList recipes={recipes}></RecipeList> */}
-      <RecipeModal
+      <RecipeList recipes={recipes}></RecipeList>
+      {/* <RecipeModal
         recipeDetail={recipe}
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      ></RecipeModal>
+        onClose={() => setModalOpen(false)}
+        accentColor="yellow"
+      ></RecipeModal> */}
     </div>
   );
 }

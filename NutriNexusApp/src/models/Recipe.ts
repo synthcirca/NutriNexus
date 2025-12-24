@@ -1,23 +1,23 @@
 export type RecipeDetail = {
-  id: number | undefined;
+  id: number;
   name: string;
   imageUrl: string;
   description: string;
   rating: number;
   prepTime: string | undefined;
   cookTime: string | undefined;
-  totalTime: string | undefined;
+  totalTime: string;
   servingSize: number | undefined;
   course: string;
   cusine: string;
 
   ingredients: RecipeIngredient[] | undefined;
   equpiment: RecipeEquipment[] | undefined;
-  instructions: RecipeInstruction[] | undefined; 
+  instructions: RecipeInstruction[] | undefined;
 };
 
 export type RecipeSummary = {
-  id: number | undefined;
+  id: number;
   name: string;
   imageUrl: string;
   description: string;

@@ -1,10 +1,10 @@
 //import Recipe from '../../models/Recipe';
-import type { Recipe } from '../../models/Recipe';
+import type { RecipeSummary } from '../../models/Recipe';
 import type { RecipeDto } from '../../models/recipeDto';
 import RecipeListItem from './RecipeListItem';
 
 interface RecipeListProps {
-  recipes: Recipe[];
+  recipes: RecipeSummary[];
 }
 
 export default function RecipeList({ recipes }: RecipeListProps) {

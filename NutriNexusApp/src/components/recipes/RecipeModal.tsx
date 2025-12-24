@@ -13,11 +13,6 @@ interface RecipeModalProps {
   recipeDetail: RecipeDetail;
   isOpen: boolean;
   onClose: () => void;
-  title: string;
-  description: string;
-  cookTime: string;
-  rating: number;
-  imageUrl: string;
   accentColor: 'yellow' | 'green' | 'orange' | 'blue';
 }
 
@@ -126,6 +121,7 @@ export default function RecipeModal({
       className="text-black fixed inset-0 bg-amber-200 bg-opacity-50 flex items-center justify-center z-50 p-4"
       onClick={onClose}
     >
+      <h1>Stuff</h1>
       {/* The card itself */}
       <div
         className="bg-blue-300 border-4 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] max-w-2xl w-full max-h-[90vh] overflow-auto"
