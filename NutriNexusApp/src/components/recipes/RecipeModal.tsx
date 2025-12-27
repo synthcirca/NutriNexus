@@ -4,7 +4,10 @@ import React, { useState, useEffect } from 'react';
 //import styles from './RecipeModal.module.css';
 //import { RiCloseLine } from 'react-icons/ri';
 
-import { mapRecipeDetailToCreateRequest, type RecipeDetail } from '@/models/Recipe';
+import {
+  mapRecipeDetailToCreateRequest,
+  type RecipeDetail,
+} from '@/models/Recipe';
 import { Pencil, Save } from 'lucide-react';
 import apiConnector from '../../api/apiConnector';
 
@@ -47,6 +50,7 @@ export default function RecipeModal({
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Update recipe state when recipeDetail prop changes
   useEffect(() => {
@@ -116,6 +120,17 @@ export default function RecipeModal({
       console.error('Error saving recipe:', error);
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleDeleteRecipe = async () => {
+    setIsDeleting(true);
+    try {
+      await apiConnector.deleteRecipe(recipe.id);
+    } catch (error) {
+      console.error('Error deleting recipe: ', error);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -319,6 +334,10 @@ export default function RecipeModal({
             {!hasChanges && !saveError && (
               <span className="text-gray-600 text-sm">No changes to save</span>
             )}
+          </div>
+
+          <div>
+            <button onClick={handleDeleteRecipe}>Delete</button>
           </div>
         </div>
       </div>

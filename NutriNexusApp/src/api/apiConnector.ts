@@ -34,6 +34,18 @@ const apiConnector = {
       throw error;
     }
   },
+  deleteRecipe: async (recipeId: number): Promise<undefined> => {
+    try {
+      const response = await axios.delete<undefined>(
+        `${API_BASE_URL}/meals/${recipeId}`
+      );
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  },
   updateRecipe: async (
     recipeId: number,
     recipeData: RecipeDetail
