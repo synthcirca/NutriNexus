@@ -18,9 +18,9 @@ namespace NutriNexusAPI.Entities
         public decimal Rating { get; set; } = 0m;
 
         //Quick Info
-        public int PrepTime { get; set; }
-        public int CookTime { get; set; }
-        public int TotalTime { get; set; }
+        public string PrepTime { get; set; }
+        public string CookTime { get; set; }
+        public string TotalTime { get; set; }
         public int ServingSize { get; set; }
 
         public string? Course {get; set;}

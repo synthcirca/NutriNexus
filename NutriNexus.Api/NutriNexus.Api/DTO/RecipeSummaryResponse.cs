@@ -7,6 +7,6 @@ public record class RecipeSummaryResponse(
 	string Name,
     string ImageUrl,
     string Description,
-    int TotalTime,
+    string TotalTime,
     decimal Rating
 ); 

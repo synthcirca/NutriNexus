@@ -13,7 +13,7 @@ builder.Services.AddSqlite<MealAppContext>(connString); //EF creates a mapping a
 builder.Services.AddScoped<MealAppContext>(); //ensure connections to db is efficient. this context is not thread safe
 builder.Services.AddCors(opt => {
     opt.AddPolicy("AllowOrigin", policyBuilder => {
-        policyBuilder.WithOrigins("https://localhost:60071/")
+        policyBuilder.WithOrigins("https://localhost:60071/", "http://localhost:5173/")
             .AllowAnyHeader()
             .AllowAnyOrigin()
             .AllowAnyMethod();

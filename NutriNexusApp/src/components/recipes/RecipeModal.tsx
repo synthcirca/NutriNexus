@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //import { Recipe } from '../../models/types';
 //import styles from './RecipeModal.module.css';
 //import { RiCloseLine } from 'react-icons/ri';
 
-import type { RecipeDetail } from '@/models/Recipe';
-import { Pencil } from 'lucide-react';
+import { mapRecipeDetailToCreateRequest, type RecipeDetail } from '@/models/Recipe';
+import { Pencil, Save } from 'lucide-react';
+import apiConnector from '../../api/apiConnector';
 
 //import { IngredientList } from './IngredientList';
 
@@ -23,7 +24,7 @@ export default function RecipeModal({
   accentColor,
 }: RecipeModalProps) {
   console.log('[v0] RecipeModal isOpen:', isOpen);
-
+  console.log('RecipeModal: recipeDetail', recipeDetail);
   if (!isOpen) return null;
 
   const accentColors = {
@@ -41,45 +42,17 @@ export default function RecipeModal({
   };
 
   const [editingField, setEditingField] = useState<string | null>(null);
-  const [recipe, setRecipe] = useState<RecipeDetail>({
-    id: -1,
-    name: 'Recipe Title',
-    imageUrl: '/delicious-pasta-dish.jpg',
-    description: 'Add descriptions',
-    rating: -1,
-    prepTime: '00:00:00',
-    cookTime: '00:00:00',
-    totalTime: '00:00:00',
-    servingSize: -1,
-    course: 'choose a course',
-    cusine: 'choose a cusine',
-    ingredients: [
-      {
-        id: -1,
-        name: 'something',
-        quantity: -1,
-        unit: 'something',
-        calories: -1,
-      },
-    ],
-    equpiment: [
-      {
-        id: -1,
-        name: 'something',
-        sourceUrl: 'source',
-        quantity: -1,
-        notes: 'something',
-      },
-    ],
-    instructions: [
-      {
-        id: -1,
-        stepNumber: 1,
-        instruction: 'instruction',
-      },
-    ],
-  });
+  const [recipe, setRecipe] = useState<RecipeDetail>(recipeDetail);
   const [tempValue, setTempValue] = useState<string>('');
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [hasChanges, setHasChanges] = useState(false);
+
+  // Update recipe state when recipeDetail prop changes
+  useEffect(() => {
+    setRecipe(recipeDetail);
+    setHasChanges(false);
+  }, [recipeDetail]);
 
   const handleEdit = (field: string, value: string) => {
     setEditingField(field);
@@ -92,13 +65,20 @@ export default function RecipeModal({
         ...prev,
         [field]: tempValue.split('\n').filter((item) => item.trim() !== ''),
       }));
+    } else if (field === 'rating') {
+      setRecipe((prev: RecipeDetail) => ({
+        ...prev,
+        [field]: parseFloat(tempValue) || prev.rating,
+      }));
     } else {
       setRecipe((prev: RecipeDetail) => ({
         ...prev,
         [field]: tempValue,
       }));
     }
+    console.log(recipe);
     setEditingField(null);
+    setHasChanges(true);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, field: keyof RecipeDetail) => {
@@ -115,13 +95,36 @@ export default function RecipeModal({
     }
   };
 
+  const handleSaveRecipe = async () => {
+    setIsSaving(true);
+    setSaveError(null);
+
+    try {
+      if (recipe.id == -1) {
+        const createRequest = mapRecipeDetailToCreateRequest(recipe);
+        await apiConnector.createRecipe(createRequest);
+      } else {
+        await apiConnector.updateRecipe(recipe.id, recipe);
+      }
+      setHasChanges(false);
+      // Optionally show success message
+      console.log('Recipe saved successfully!');
+    } catch (error) {
+      setSaveError(
+        error instanceof Error ? error.message : 'Failed to save recipe'
+      );
+      console.error('Error saving recipe:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     //Background - black background that you can click on to close out of the modal
     <div
-      className="text-black fixed inset-0 bg-amber-200 bg-opacity-50 flex items-center justify-center z-50 p-4"
+      className="text-black fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 p-4"
       onClick={onClose}
     >
-      <h1>Stuff</h1>
       {/* The card itself */}
       <div
         className="bg-blue-300 border-4 border-black shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] max-w-2xl w-full max-h-[90vh] overflow-auto"
@@ -141,10 +144,10 @@ export default function RecipeModal({
             />
           ) : (
             <h2
-              onClick={() => handleEdit('name', recipeDetail.name)}
+              onClick={() => handleEdit('name', recipe.name)}
               className="group cursor-pointer text-balance text-3xl font-bold text-foreground transition-colors hover:text-accent md:text-4xl"
             >
-              {recipeDetail.name}
+              {recipe.name}
               <Pencil className="ml-2 inline-block h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
             </h2>
           )}
@@ -162,8 +165,8 @@ export default function RecipeModal({
           className={`w-full h-64 border-b-4 border-black overflow-hidden ${bgColors[accentColor]}`}
         >
           <img
-            src={recipeDetail.imageUrl || '/placeholder.svg'}
-            alt={recipeDetail.name}
+            src={recipe.imageUrl || '/placeholder.svg'}
+            alt={recipe.name}
             className="w-full h-full object-cover"
           />
         </div>
@@ -187,12 +190,10 @@ export default function RecipeModal({
             ) : (
               <>
                 <span
-                  onClick={() =>
-                    handleEdit('totalTime', recipeDetail.totalTime)
-                  }
+                  onClick={() => handleEdit('totalTime', recipe.totalTime)}
                   className={`text-sm font-bold ${accentColors[accentColor]} px-3 py-2 border-2 border-black`}
                 >
-                  {recipeDetail.totalTime}
+                  {recipe.totalTime}
                 </span>
                 <Pencil className="ml-2 inline-block h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
               </>
@@ -213,12 +214,10 @@ export default function RecipeModal({
               </>
             ) : (
               <span
-                onClick={() =>
-                  handleEdit('rating', recipeDetail.rating.toString())
-                }
+                onClick={() => handleEdit('rating', recipe.rating.toString())}
                 className="text-lg font-bold"
               >
-                ⭐ {recipeDetail.rating}
+                ⭐ {recipe.rating}
               </span>
             )}
           </div>
@@ -247,11 +246,11 @@ export default function RecipeModal({
                 <>
                   <p
                     onClick={() =>
-                      handleEdit('description', recipeDetail.description)
+                      handleEdit('description', recipe.description)
                     }
                     className="text-base"
                   >
-                    {recipeDetail.description}
+                    {recipe.description}
                   </p>
                 </>
               )}
@@ -297,6 +296,29 @@ export default function RecipeModal({
                 </li>
               </ol>
             </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t-2 border-black flex items-center justify-between">
+            <button
+              onClick={handleSaveRecipe}
+              disabled={!hasChanges || isSaving}
+              className={`flex items-center gap-2 px-6 py-3 border-2 border-black font-bold text-sm transition-all ${
+                hasChanges && !isSaving
+                  ? `${accentColors[accentColor]} hover:translate-x-1 hover:translate-y-1 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] cursor-pointer`
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
+            >
+              <Save className="h-5 w-5" />
+              {isSaving ? 'Saving...' : 'Save Changes'}
+            </button>
+            {saveError && (
+              <span className="text-red-600 text-sm font-bold">
+                {saveError}
+              </span>
+            )}
+            {!hasChanges && !saveError && (
+              <span className="text-gray-600 text-sm">No changes to save</span>
+            )}
           </div>
         </div>
       </div>

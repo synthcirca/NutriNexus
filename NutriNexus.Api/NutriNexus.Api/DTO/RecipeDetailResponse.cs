@@ -7,9 +7,9 @@
         public string ImageUrl { get; init; }
         public string Description { get; init; }
         public decimal Rating { get; init; }
-        public int PrepTime { get; init; }
-        public int CookTime { get; init; }
-        public int TotalTime { get; init; }
+        public string PrepTime { get; init; }
+        public string CookTime { get; init; }
+        public string TotalTime { get; init; }
         public int ServingSize { get; init; }
         public string Course { get; init; }
         public string Cuisine { get; init; }

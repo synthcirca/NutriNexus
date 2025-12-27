@@ -75,24 +75,31 @@ function App() {
   }, []);
 
   //so should I create a new recipe object and pass it into here so that it behaves like when you would edit?
-  // const addNewRecipe = () => {
-  //   setSelectedRecipe(recipe);
-  //   setModalOpen(true);
-  //   console.log('Modal is Open!');
-  // };
+  const addNewRecipe = () => {
+    setSelectedRecipe(recipe);
+    setModalOpen(true);
+    console.log('Modal is Open!');
+  };
 
-  // const closeModal = () => {
-  //   setSelectedRecipe(null);
-  //   setModalOpen(false);
-  // };
+  const closeModal = () => {
+    setSelectedRecipe(null);
+    setModalOpen(false);
+  };
 
   return (
     <div>
       <h1> Recipe List</h1>
-      {/* <div className="relative">
+      <div className="relative">
         <button onClick={addNewRecipe}>Add New Recipe</button>
-        {isModalOpen && <RecipeModal onClose={closeModal} />}
-      </div> */}
+        {isModalOpen && (
+          <RecipeModal
+            recipeDetail={recipe}
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            accentColor="yellow"
+          />
+        )}
+      </div>
       <RecipeList recipes={recipes}></RecipeList>
       {/* <RecipeModal
         recipeDetail={recipe}

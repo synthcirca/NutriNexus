@@ -82,9 +82,9 @@ public class RecipesEndpointTests : IClassFixture<MealAppFactory>
             "/test.jpg",
             "Test description",
             4.5m,
-            10,
-            20,
-            30,
+            "00:10:00",
+            "00:20:00",
+            "00:30:00",
             4,
             "Dinner",
             "Italian",
@@ -153,9 +153,9 @@ public class RecipesEndpointTests : IClassFixture<MealAppFactory>
         recipe.ImageUrl.Should().NotBeNullOrEmpty();
         recipe.Description.Should().NotBeNullOrEmpty();
         recipe.Rating.Should().BeGreaterThan(0);
-        recipe.PrepTime.Should().BeGreaterThan(0);
-        recipe.CookTime.Should().BeGreaterThan(0);
-        recipe.TotalTime.Should().BeGreaterThan(0);
+        recipe.PrepTime.Should().NotBeNull();
+        recipe.CookTime.Should().NotBeNull();
+        recipe.TotalTime.Should().NotBeNull();
         recipe.ServingSize.Should().BeGreaterThan(0);
         recipe.Course.Should().NotBeNullOrEmpty();
         recipe.Cuisine.Should().NotBeNullOrEmpty();
@@ -203,9 +203,9 @@ public class RecipesEndpointTests : IClassFixture<MealAppFactory>
             ImageUrl = "/updated.jpg",
             Description = "Updated description",
             Rating = 5.0m,
-            PrepTime = 15,
-            CookTime = 25,
-            TotalTime = 40,
+            PrepTime = "00:15:00",
+            CookTime = "00:25:00",
+            TotalTime = "00:40:00",
             ServingSize = 6,
             Course = "Lunch",
             Cuisine = "French",
@@ -276,9 +276,9 @@ public class RecipesEndpointTests : IClassFixture<MealAppFactory>
             ImageUrl = "/updated.jpg",
             Description = "Updated description",
             Rating = 5.0m,
-            PrepTime = 15,
-            CookTime = 25,
-            TotalTime = 40,
+            PrepTime = "00:15:00",
+            CookTime = "00:25:00",
+            TotalTime = "00:40:00",
             ServingSize = 6,
             Course = "Lunch",
             Cuisine = "French",
@@ -333,9 +333,9 @@ public class RecipesEndpointTests : IClassFixture<MealAppFactory>
             "/test.jpg",
             "Test description",
             4.5m,
-            10,
-            20,
-            30,
+            "00:10:00",
+            "00:20:00",
+            "00:30:00",
             4,
             "Dinner",
             "Italian",

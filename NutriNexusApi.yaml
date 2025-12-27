@@ -1,0 +1,597 @@
+openapi: 3.0.3
+info:
+  title: Recipe & Grocery List API
+  version: 1.0.0
+  description: |
+    A RESTful API for creating, searching, and managing recipes,
+    and for generating grocery lists from selected recipes.
+
+servers:
+  - url: https://api.myapp.com/v1
+    description: Production
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # ---- Basic Types ----
+    Unit:
+      type: string
+      enum:
+        - g
+        - kg
+        - ml
+        - l
+        - tsp
+        - tbsp
+        - cup
+        - oz
+        - lb
+        - piece
+
+    # ---- Ingredient ----
+    Ingredient:
+      type: object
+      required:
+        - name
+        - quantity
+        - unit
+      properties:
+        name:
+          type: string
+          example: 'All-purpose flour'
+        quantity:
+          type: number
+          format: double
+          example: 200
+        unit:
+          $ref: '#/components/schemas/Unit'
+        note:
+          type: string
+          description: e.g. "sifted"
+
+    # ---- Recipe ----
+    Recipe:
+      type: object
+      required:
+        - id
+        - name
+        - ingredients
+        - directions
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          example: 'Classic Chocolate Cake'
+        description:
+          type: string
+          example: 'A moist chocolate cake that’s perfect for parties.'
+        imageUrl:
+          type: string
+          format: uri
+        timeEstimate:
+          type: integer
+          format: int32
+          description: Minutes to cook
+          example: 90
+        servingSize:
+          type: integer
+          description: Number of servings
+          example: 8
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        directions:
+          type: array
+          items:
+            type: string
+            example: 'Preheat oven to 350°F (175°C).'
+        rating:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 5
+          example: 4.5
+        tags:
+          type: array
+          items:
+            type: string
+          description: e.g. ["dessert","vegan"]
+        dietaryRestrictions:
+          type: array
+          items:
+            type: string
+          description: e.g. ["gluten-free","nut-free"]
+
+    # ---- Recipe Create / Update ----
+    RecipeCreate:
+      type: object
+      required:
+        - name
+        - ingredients
+        - directions
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+          format: uri
+        timeEstimate:
+          type: integer
+          format: int32
+        servingSize:
+          type: integer
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ingredient'
+        directions:
+          type: array
+          items:
+            type: string
+        rating:
+          type: number
+          format: float
+        tags:
+          type: array
+          items:
+            type: string
+        dietaryRestrictions:
+          type: array
+          items:
+            type: string
+
+    # ---- Grocery Item ----
+    GroceryItem:
+      type: object
+      required:
+        - name
+        - totalQuantity
+        - unit
+        - aisle
+      properties:
+        name:
+          type: string
+        totalQuantity:
+          type: number
+          format: double
+        unit:
+          $ref: '#/components/schemas/Unit'
+        aisle:
+          type: string
+          description: e.g. "Dairy"
+
+    # ---- Grocery List ----
+    GroceryList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroceryItem'
+        totalCost:
+          type: number
+          format: double
+          description: Estimated total cost in user’s currency
+          example: 25.40
+        currency:
+          type: string
+          example: 'USD'
+
+    # ---- Error ----
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        error:
+          type: string
+        details:
+          type: string
+
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ValidationError:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+paths:
+  # --- Auth --- #
+  /auth/login:
+    post:
+      summary: Log in and receive a JWT
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  expiresIn:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # --- Recipes --- #
+  /recipes:
+    get:
+      summary: List recipes with filtering & pagination
+      tags: [Recipes]
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search by name or description
+        - name: tags
+          in: query
+          schema:
+            type: string
+          description: Comma‑separated list of tags
+        - name: ingredients
+          in: query
+          schema:
+            type: string
+          description: Comma‑separated list of ingredient names (must all be present)
+        - name: maxTime
+          in: query
+          schema:
+            type: integer
+          description: Max cooking time in minutes
+        - name: dietaryRestrictions
+          in: query
+          schema:
+            type: string
+          description: Comma‑separated list
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+            enum: [name, timeEstimate, rating, servingSize]
+          description: Field to sort on
+        - name: order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+      responses:
+        '200':
+          description: Recipe list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  page:
+                    type: integer
+                  pageSize:
+                    type: integer
+                  total:
+                    type: integer
+                  recipes:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Recipe'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+      security:
+        - bearerAuth: []
+
+    post:
+      summary: Create a new recipe
+      tags: [Recipes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+
+  /recipes/batch:
+    post:
+      summary: Bulk create recipes
+      tags: [Recipes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/RecipeCreate'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recipe'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+
+  /recipes/{recipeId}:
+    get:
+      summary: Get a single recipe
+      tags: [Recipes]
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Recipe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+
+    put:
+      summary: Update a recipe
+      tags: [Recipes]
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeCreate'
+      responses:
+        '200':
+          description: Updated recipe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recipe'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+
+    delete:
+      summary: Delete a recipe
+      tags: [Recipes]
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+
+  /recipes/batch/delete:
+    post:
+      summary: Bulk delete recipes
+      tags: [Recipes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+      responses:
+        '204':
+          description: Deleted
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+
+  # --- Grocery List --- #
+  /grocery-lists:
+    post:
+      summary: Generate a grocery list from selected recipes
+      tags: [Grocery]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [recipeIds, scaleFactor]
+              properties:
+                recipeIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: List of recipe IDs to combine
+                scaleFactor:
+                  type: number
+                  format: double
+                  default: 1
+                  description: 1 = normal servings, 0.5 = half, 2 = double
+                currency:
+                  type: string
+                  example: USD
+      responses:
+        '200':
+          description: Grocery list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroceryList'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+
+  # --- User Profile (optional) --- #
+  /users/me:
+    get:
+      summary: Get current user profile
+      tags: [Users]
+      responses:
+        '200':
+          description: User
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  username:
+                    type: string
+                  email:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+
+    put:
+      summary: Update current user profile
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                username:
+                  type: string
+      responses:
+        '200':
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  username:
+                    type: string
+                  email:
+                    type: string
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+        - bearerAuth: []
+
+  # --- Rate‑Limit (via headers) --- #
+  # Response headers will include:
+  # X-RateLimit-Limit
+  # X-RateLimit-Remaining
+  # X-RateLimit-Reset
