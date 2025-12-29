@@ -34,15 +34,13 @@ const apiConnector = {
       throw error;
     }
   },
-  deleteRecipe: async (recipeId: number): Promise<undefined> => {
+  deleteRecipe: async (recipeId: number): Promise<void> => {
     try {
-      const response = await axios.delete<undefined>(
-        `${API_BASE_URL}/meals/${recipeId}`
-      );
+      const response = await axios.delete(`${API_BASE_URL}/meals/${recipeId}`);
       console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error);
+      console.log('Error deleting recipe', error);
       throw error;
     }
   },

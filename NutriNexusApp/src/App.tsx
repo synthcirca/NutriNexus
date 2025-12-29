@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import './globals.css';
 import axios from 'axios';
 import React from 'react';
 import apiConnector from './api/apiConnector';
@@ -13,6 +14,8 @@ import type { RecipeDetail, RecipeSummary } from './models/Recipe';
 //import RecipesPage from './components/recipes/RecipesPage';
 import RecipeList from './components/recipes/RecipeList';
 import RecipeModal from './components/recipes/RecipeModal';
+import { BrutalistBox } from './components/ui/BrutalistBox';
+import { AppHeader } from './components/app-header';
 //import RecipeList from './components/recipes/RecipeList';
 
 interface AppState {
@@ -88,9 +91,14 @@ function App() {
 
   return (
     <div>
-      <h1> Recipe List</h1>
+      <AppHeader></AppHeader>
       <div className="relative">
-        <button onClick={addNewRecipe}>Add New Recipe</button>
+        <button
+          className="h-12 border-black border-2 p-2.5 bg-[#A6FAFF] hover:bg-[#79F7FF] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] rounded-full"
+          onClick={addNewRecipe}
+        >
+          Add New Recipe
+        </button>
         {isModalOpen && (
           <RecipeModal
             recipeDetail={recipe}
@@ -101,12 +109,18 @@ function App() {
         )}
       </div>
       <RecipeList recipes={recipes}></RecipeList>
-      {/* <RecipeModal
-        recipeDetail={recipe}
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        accentColor="yellow"
-      ></RecipeModal> */}
+
+      {/* <div className="w-96 px-8 py-4 bg-white border-4 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] grid place-content-center">
+        <div>
+          <h1 className="text-2xl mb-4">The message you want goes in here.</h1>
+          <div className="flex space-x-2 mx-auto w-32">
+            <button className="text-base">Cancel</button>
+            <button className="h-12 border-black border-2 p-2.5 bg-[#A6FAFF] hover:bg-[#79F7FF] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] rounded-full">
+              Enable
+            </button>
+          </div>
+        </div>
+      </div> */}
     </div>
   );
 }

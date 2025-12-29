@@ -147,6 +147,7 @@ export default function RecipeModal({
       >
         {/* Header */}
         <div className="flex justify-between items-start p-4 border-b-4 border-black">
+          {/*Recipe Name*/}
           {editingField === 'name' ? (
             <input
               type="text"
@@ -166,6 +167,8 @@ export default function RecipeModal({
               <Pencil className="ml-2 inline-block h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
             </h2>
           )}
+
+          {/*Close Modal Button*/}
           <button
             onClick={onClose}
             className="text-white text-2xl font-bold w-10 h-10 flex items-center justify-center border-2 border-black bg-red-300 hover:bg-red-400 transition-colors ml-4"
@@ -190,6 +193,30 @@ export default function RecipeModal({
         <div className="p-6">
           {/* Quick Facts */}
           <div className="flex items-center gap-4 mb-6 pb-4 border-b-2 border-black">
+            {editingField === 'course' ? (
+              <>
+                <input
+                  type="text"
+                  value={tempValue}
+                  onChange={(e) => setTempValue(e.target.value)}
+                  onBlur={() => handleSave('course')}
+                  onKeyDown={(e) => handleKeyDown(e, 'course')}
+                  className={`text-sm font-bold ${accentColors[accentColor]} px-3 py-2 border-2 border-black`}
+                  autoFocus
+                />
+              </>
+            ) : (
+              <>
+                <span
+                  onClick={() => handleEdit('course', recipe.course)}
+                  className={`text-sm font-bold ${accentColors[accentColor]} px-3 py-2 border-2 border-black`}
+                >
+                  {recipe.course}
+                </span>
+                <Pencil className="ml-2 inline-block h-5 w-5 opacity-0 transition-opacity group-hover:opacity-100" />
+              </>
+            )}
+
             {editingField === 'totalTime' ? (
               <>
                 <input

@@ -115,7 +115,7 @@ namespace NutriNexusAPI.Mapping
 
         public static RecipeDetailResponse ToRecipeDetailDTO(this Recipe recipe)
         {
-            Debug.WriteLine($"First ingredient: {recipe.RecipeIngredients.First<RecipeIngredient>().Ingredient.Name}");
+           // Debug.WriteLine($"First ingredient: {recipe.RecipeIngredients.First<RecipeIngredient>().Ingredient.Name}");
 
             var ingredientsList = recipe.RecipeIngredients?
                 .OrderBy(ri => ri.Id)
@@ -129,8 +129,8 @@ namespace NutriNexusAPI.Mapping
                 })
                 .ToList() ?? new List<RecipeIngredientResponse>();
 
-            Debug.WriteLine($"First Ingredient again: {ingredientsList.First().Name}");
-            Debug.WriteLine($"ServingSize: {recipe.ServingSize}");
+            //Debug.WriteLine($"First Ingredient again: {ingredientsList.First().Name}");
+            //Debug.WriteLine($"ServingSize: {recipe.ServingSize}");
             var resp =  new RecipeDetailResponse
             {
                 Id = recipe.RecipeId,
