@@ -1,6 +1,5 @@
 //import Recipe from '../../models/Recipe';
 import type { RecipeSummary } from '../../models/Recipe';
-import type { RecipeDto } from '../../models/recipeDto';
 import RecipeListItem from './RecipeListItem';
 
 interface RecipeListProps {

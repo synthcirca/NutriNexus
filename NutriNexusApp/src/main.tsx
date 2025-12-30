@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import NotFoundPage from './pages/NoteFoundPage';
-import MealPlannerPage from './page';
+import MealPlannerPage from './pages/plan/page';
 import HomePage from './pages/home/page.tsx';
 import CookPage from './pages/cook/page.tsx';
 import ShopPage from './pages/shop/page.tsx';
