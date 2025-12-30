@@ -16,7 +16,8 @@ import RecipeList from './components/recipes/RecipeList';
 import RecipeModal from './components/recipes/RecipeModal';
 import { BrutalistBox } from './components/ui/BrutalistBox';
 import { AppHeader } from './components/app-header';
-import MealPlannerPage from './page';
+import { Outlet } from 'react-router';
+
 //import RecipeList from './components/recipes/RecipeList';
 
 interface AppState {
@@ -91,38 +92,46 @@ function App() {
   };
 
   return (
-    <div>
-      {/* <AppHeader></AppHeader>
-      <div className="relative">
-        <button
-          className="h-12 border-black border-2 p-2.5 bg-[#A6FAFF] hover:bg-[#79F7FF] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] rounded-full"
-          onClick={addNewRecipe}
-        >
-          Add New Recipe
-        </button>
-        {isModalOpen && (
-          <RecipeModal
-            recipeDetail={recipe}
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            accentColor="yellow"
-          />
-        )}
-      </div>
-      <RecipeList recipes={recipes}></RecipeList> */}
-      <MealPlannerPage></MealPlannerPage>
-      {/* <div className="w-96 px-8 py-4 bg-white border-4 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] grid place-content-center">
-        <div>
-          <h1 className="text-2xl mb-4">The message you want goes in here.</h1>
-          <div className="flex space-x-2 mx-auto w-32">
-            <button className="text-base">Cancel</button>
-            <button className="h-12 border-black border-2 p-2.5 bg-[#A6FAFF] hover:bg-[#79F7FF] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] rounded-full">
-              Enable
-            </button>
-          </div>
-        </div>
-      </div> */}
-    </div>
+    // <div>
+    //   {/* <AppHeader></AppHeader>
+    //   <div className="relative">
+    //     <button
+    //       className="h-12 border-black border-2 p-2.5 bg-[#A6FAFF] hover:bg-[#79F7FF] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] rounded-full"
+    //       onClick={addNewRecipe}
+    //     >
+    //       Add New Recipe
+    //     </button>
+    //     {isModalOpen && (
+    //       <RecipeModal
+    //         recipeDetail={recipe}
+    //         isOpen={isModalOpen}
+    //         onClose={closeModal}
+    //         accentColor="yellow"
+    //       />
+    //     )}
+    //   </div>
+    //   <RecipeList recipes={recipes}></RecipeList> */}
+    //   <MealPlannerPage></MealPlannerPage>
+    //   {/* <div className="w-96 px-8 py-4 bg-white border-4 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] grid place-content-center">
+    //     <div>
+    //       <h1 className="text-2xl mb-4">The message you want goes in here.</h1>
+    //       <div className="flex space-x-2 mx-auto w-32">
+    //         <button className="text-base">Cancel</button>
+    //         <button className="h-12 border-black border-2 p-2.5 bg-[#A6FAFF] hover:bg-[#79F7FF] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:bg-[#00E1EF] rounded-full">
+    //           Enable
+    //         </button>
+    //       </div>
+    //     </div>
+    //   </div> */}
+    // </div>
+
+    <>
+      <AppHeader />
+      <main>
+        <Outlet />
+      </main>
+      {/* <Footer /> */}
+    </>
   );
 }
 
