@@ -1,0 +1,68 @@
+import type { Recipe } from '../models/Recipe';
+
+export const SAMPLE_RECIPES: Recipe[] = [
+  {
+    id: '1',
+    name: 'Spaghetti Bolognese',
+    servings: 6,
+    category: 'Dinner',
+    prepTime: '45 min',
+    description: 'Classic Italian pasta with meat sauce',
+  },
+  {
+    id: '2',
+    name: 'Chicken Stir Fry',
+    servings: 4,
+    category: 'Dinner',
+    prepTime: '30 min',
+    description: 'Quick and healthy stir fry',
+  },
+  {
+    id: '3',
+    name: 'Veggie Curry',
+    servings: 8,
+    category: 'Dinner',
+    prepTime: '40 min',
+    description: 'Spicy vegetable curry',
+  },
+  {
+    id: '4',
+    name: 'Lasagna',
+    servings: 10,
+    category: 'Dinner',
+    prepTime: '90 min',
+    description: 'Layered pasta with cheese and meat',
+  },
+  {
+    id: '5',
+    name: 'Chili Con Carne',
+    servings: 8,
+    category: 'Dinner',
+    prepTime: '60 min',
+    description: 'Hearty bean and meat stew',
+  },
+  {
+    id: '6',
+    name: 'Chicken Soup',
+    servings: 6,
+    category: 'Lunch',
+    prepTime: '50 min',
+    description: 'Comforting homemade soup',
+  },
+  {
+    id: '7',
+    name: 'Beef Tacos',
+    servings: 4,
+    category: 'Dinner',
+    prepTime: '25 min',
+    description: 'Mexican-style tacos',
+  },
+  {
+    id: '8',
+    name: 'Pulled Pork',
+    servings: 12,
+    category: 'Dinner',
+    prepTime: '4 hours',
+    description: 'Slow-cooked pulled pork',
+  },
+];

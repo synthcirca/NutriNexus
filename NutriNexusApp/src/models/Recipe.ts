@@ -89,6 +89,29 @@ export type RecipeInstructionsCreateRequest = {
   instruction: string;
 };
 
+export interface Recipe {
+  id: string
+  name: string
+  servings: number
+  category: string
+  prepTime: string
+  description: string
+}
+
+export interface ServingInstance {
+  id: string
+  date: Date
+  dayIndex: number // Which serving this is (0-based)
+}
+
+export interface PlannedMeal {
+  id: string
+  recipe: Recipe
+  peopleEating: number
+  totalServings: number
+  servingInstances: ServingInstance[] // Array of individual serving placements
+}
+
 
 export function mapRecipeDetailToCreateRequest(
   recipeDetail: RecipeDetail
