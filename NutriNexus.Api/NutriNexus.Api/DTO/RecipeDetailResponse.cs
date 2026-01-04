@@ -2,14 +2,14 @@
 {
     public record RecipeDetailResponse
     {
-        public int Id { get; init; }
+        public Guid Id { get; init; }
         public string Name { get; init; }
         public string ImageUrl { get; init; }
         public string Description { get; init; }
         public decimal Rating { get; init; }
-        public string PrepTime { get; init; }
-        public string CookTime { get; init; }
-        public string TotalTime { get; init; }
+        public TimeSpan PrepTime { get; init; }
+        public TimeSpan CookTime { get; init; }
+        public TimeSpan TotalTime { get; init; }
         public int ServingSize { get; init; }
         public string Course { get; init; }
         public string Cuisine { get; init; }

@@ -38,7 +38,7 @@ namespace NutriNexusAPI.Endpoints
 
 
             ///////////////////////// GET /meals/1
-            group.MapGet("/{id}", async (int id, MealAppContext dbContext) =>
+            group.MapGet("/{id}", async (Guid id, MealAppContext dbContext) =>
             {
                 Recipe? recipe = await dbContext.Recipes
                     .Include(r => r.RecipeIngredients)
@@ -70,7 +70,7 @@ namespace NutriNexusAPI.Endpoints
             }).WithParameterValidation();
 
             //////////////////////// PUT /recipes
-            group.MapPut("/{id}", async (int id, RecipeUpdateRequest request, MealAppContext dbContext) =>
+            group.MapPut("/{id}", async (Guid id, RecipeUpdateRequest request, MealAppContext dbContext) =>
             {
                 // Load existing recipe with all related data
                 var existingRecipe = await dbContext.Recipes
@@ -130,6 +130,7 @@ namespace NutriNexusAPI.Endpoints
 
                     existingRecipe.RecipeIngredients.Add(new RecipeIngredient
                     {
+                        Recipe = existingRecipe,
                         Ingredient = ingredient,
                         Quantity = ingredientRequest.Quantity,
                         Unit = ingredientRequest.Unit,
@@ -161,7 +162,7 @@ namespace NutriNexusAPI.Endpoints
                     {
                         RecipeId = existingRecipe.RecipeId,
                         Recipe = existingRecipe,
-                        EquipmentId = equipment.Id,
+                        EquipmentId = equipment.EquipmentId,
                         Equipment = equipment,
                         Quantity = equipmentRequest.Quantity,
                         Notes = equipmentRequest.Notes
@@ -175,7 +176,7 @@ namespace NutriNexusAPI.Endpoints
             .WithName("UpdateRecipe")
             .WithOpenApi();
 
-            group.MapDelete("/{id}", async (int id, MealAppContext dbContext) =>
+            group.MapDelete("/{id}", async (Guid id, MealAppContext dbContext) =>
             {
                 var recipe = await dbContext.Recipes
                     .Include(r => r.RecipeIngredients)

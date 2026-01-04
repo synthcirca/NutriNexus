@@ -1,19 +1,18 @@
 ﻿using NutriNexusAPI.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace NutriNexus.Api.Entities
 {
     public class RecipeIngredient
     {
-        public int Id { get; set; }
-        public int RecipeId { get; set; }
-        public Recipe Recipe { get; set; }
-        public int IngredientId { get; set; }
-        public Ingredient Ingredient { get; set; }
+        [Key]
+        public Guid RecipeIngredientId { get; set; }
+        public Guid RecipeId { get; set; }
+        public required Recipe Recipe { get; set; }
+        public Guid IngredientId { get; set; }
+        public required Ingredient Ingredient { get; set; }
         public float? Quantity { get; set; }
-        public string Unit { get; set; }
-
+        public required string Unit { get; set; }
         public string? Note { get; set; }
-        
-        
     }
 }

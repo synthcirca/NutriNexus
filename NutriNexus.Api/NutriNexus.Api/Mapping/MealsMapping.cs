@@ -86,7 +86,7 @@ namespace NutriNexusAPI.Mapping
                 {
                     RecipeId = recipe.RecipeId,
                     Recipe = recipe,
-                    EquipmentId = equipment.Id,
+                    EquipmentId = equipment.EquipmentId,
                     Equipment = equipment,
                     Quantity = equipmentRequest.Quantity,
                     Notes = equipmentRequest.Notes
@@ -118,10 +118,10 @@ namespace NutriNexusAPI.Mapping
            // Debug.WriteLine($"First ingredient: {recipe.RecipeIngredients.First<RecipeIngredient>().Ingredient.Name}");
 
             var ingredientsList = recipe.RecipeIngredients?
-                .OrderBy(ri => ri.Id)
+                .OrderBy(ri => ri.RecipeIngredientId)
                 .Select(ri => new RecipeIngredientResponse
                 {
-                    Id = ri.Ingredient.Id,
+                    Id = ri.Ingredient.IngredientId,
                     Name = ri.Ingredient.Name,
                     Quantity = ri.Quantity,
                     Unit = ri.Unit,
@@ -145,10 +145,10 @@ namespace NutriNexusAPI.Mapping
                 Course = recipe.Course,
                 Cuisine = recipe.Cuisine,
                 Ingredients = recipe.RecipeIngredients?
-                .OrderBy(ri => ri.Id)
+                .OrderBy(ri => ri.RecipeIngredientId)
                 .Select(ri => new RecipeIngredientResponse
                 {
-                    Id = ri.Ingredient.Id,
+                    Id = ri.Ingredient.IngredientId,
                     Name = ri.Ingredient.Name,
                     Quantity = ri.Quantity,
                     Unit = ri.Unit,
@@ -164,7 +164,7 @@ namespace NutriNexusAPI.Mapping
                 })
                 .ToList() ?? new List<RecipeInstructionResponse>(),
                 Equipment = recipe.RecipeEquipment?
-                .OrderBy(d => d.Id)
+                .OrderBy(d => d.RecipeEquipmentId)
                 .Select(d => new RecipeEquipmentResponse
                 {
                     Name = d.Equipment.Name,

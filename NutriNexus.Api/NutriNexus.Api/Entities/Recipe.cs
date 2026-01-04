@@ -6,21 +6,20 @@ namespace NutriNexusAPI.Entities
 {
     public class Recipe
     {
-        public int RecipeId { get; set; }
+        [Key]
+        public Guid RecipeId { get; set; }
 
-        [Required]
-        [MaxLength(200)]
         public string Name { get; set; } = null!;
-        [Required]
+        
         public required string ImageUrl { get; set; }
-        [Required]
+       
         public required string Description { get; set; }
         public decimal Rating { get; set; } = 0m;
 
         //Quick Info
-        public string PrepTime { get; set; }
-        public string CookTime { get; set; }
-        public string TotalTime { get; set; }
+        public TimeSpan PrepTime { get; set; }
+        public TimeSpan CookTime { get; set; }
+        public TimeSpan TotalTime { get; set; }
         public int ServingSize { get; set; }
 
         public string? Course {get; set;}

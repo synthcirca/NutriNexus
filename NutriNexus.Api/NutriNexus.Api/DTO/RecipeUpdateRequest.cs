@@ -9,9 +9,9 @@ namespace NutriNexus.Api.DTO
         public string ImageUrl { get; set; }
         public string Description { get; set; }
         public decimal Rating { get; set; }
-        public string PrepTime { get; set; }
-        public string CookTime { get; set; }
-        public string TotalTime { get; set; }
+        public TimeSpan PrepTime { get; set; }
+        public TimeSpan CookTime { get; set; }
+        public TimeSpan TotalTime { get; set; }
         public int ServingSize { get; set; }
         public string Course { get; set; }
         public string Cuisine { get; set; }

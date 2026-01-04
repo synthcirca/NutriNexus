@@ -3,10 +3,10 @@ using NutriNexusAPI.Entities;
 namespace NutriNexusAPI.DTO;
 
 public record class RecipeSummaryResponse(
-	int Id,
+	Guid Id,
 	string Name,
     string ImageUrl,
     string Description,
-    string TotalTime,
+    TimeSpan TotalTime,
     decimal Rating
 ); 
